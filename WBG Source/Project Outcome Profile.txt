@@ -1,0 +1,766 @@
+<div *ngIf="loadingComplete;then showData else showLoading">
+
+</div>
+
+<ng-template #showLoading>
+
+    Loading
+
+</ng-template>
+
+<ng-template #showData>
+
+    <app-breadcrumb (eventEmit)="breadCrumb_operation($event)"></app-breadcrumb>
+
+    <div id="content">
+
+        <app-stageindicator [parentData]="['PP', itemID]"></app-stageindicator>
+
+        <form [formGroup]="ProjectOutcomeProfile_Form">
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                    <div class="body-content">
+
+                        <h1 class="page-heading">Outcome Profile</h1>
+
+ 
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Outcome Name</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="OutcomeName">
+
+                                </div>
+
+                            </div>
+
+ 
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Outcome Type</label>
+
+                                    <div class="select-wrapper">
+
+                                        <select class="form-control" formControlName="OutcomeTypeID" (change)="setSelectedName('OutcomeTypeName',$event.target.selectedIndex, outcomeTypes)">
+
+                                            <option value="">Select</option>
+
+                                            <option *ngFor="let ot of outcomeTypes" [value]="ot.cgap_id">
+
+                                                {{ot.cgap_name}}
+
+                                            </option>
+
+                                            <!--<option [value]="644010000">Project Outcome with Partners</option>
+
+                                        <option [value]="644010001">Project Outcome with Non-Partners</option>
+
+                                        <option [value]="644010002">ToC Industry Outcome</option>-->
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+ 
+
+ 
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Outcome Pillar</label>
+
+                                    <div class="select-wrapper">
+
+                                        <select class="form-control" formControlName="OutcomePillarID">
+
+                                            <option value="">Select</option>
+
+                                            <option *ngFor="let optval of outcmePillar" [value]="optval.cgap_pillarid">
+
+                                                {{optval.cgap_name}}
+
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Outcome Status</label>
+
+                                    <div class="select-wrapper">
+
+                                        <select class="form-control" formControlName="OutcomeStatusID">
+
+                                            <option value="">Select</option>
+
+                                            <!--<option [value]="644010000">ON-TRACK</option>
+
+                                        <option [value]="644010001">DELAYED OR RESTRUCTURED</option>
+
+                                        <option [value]="644010002">DE-PRIORITIZED OR CANCELLED</option>-->
+
+                                            <option *ngFor="let ot of outcomeStatus" [value]="ot.cgap_id">
+
+                                                {{ot.cgap_name}}
+
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+ 
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Project Name</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" disabled formControlName="ProjectName">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+ 
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Theory of Change Pathway</label>
+
+                                    <div class="select-wrapper">
+
+                                        <select class="form-control" formControlName="TheoryOfChangePathwayID">
+
+                                            <option value="">Select</option>
+
+                                            <option *ngFor="let optval of tocValues" [value]="optval.TOCID">
+
+                                                {{optval.value}}
+
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+ 
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <label for="">Result Architecture - TOC Images</label>
+
+                                <div class="row">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" formArrayName="Document">
+
+                                        <div [formGroupName]="i" *ngFor="let doc of documentArray; let i=index;">
+
+                                            <input type="file" formControlName="UploadFile" [attr.accept]="strFiletypes" (change)="FileChange($event.target)">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                        <span *ngIf="resultsArchitectureTOCImagesURL && !resultsArchitectureTOCImg"><a href="{{resultsArchitectureTOCImagesURL}}" data-toggle="tooltip" title="{{resultsArchitectureTOCImagesURL}}" target="_blank">{{dockNameForUrl}}</a></span>
+
+                                        <span *ngIf="resultsArchitectureTOCImg">{{resultsArchitectureTOCImg}}</span>
+
+                                    </div>
+
+                                </div>
+
+ 
+
+                            </div>
+
+                        </div>
+
+ 
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Outcome Rationale</label>
+
+                                    <textarea formControlName="OutcomeRationale" rows="5" appSummernote></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+ 
+
+                        <div *ngIf="showOutcomeIndicators">
+
+                            <div class="row">
+
+ 
+
+                                <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                    <h1 class="page-heading">Outcome Indicators</h1>
+
+                                    <div class="table-responsive">
+
+                                        <table class="table table-hover table-bordered table-striped">
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>Indicator #</th>
+
+                                                    <th>Title</th>
+
+                                                    <th>Status</th>
+
+                                                    <th>Action</th>
+
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr *ngFor="let outcomeobj of projectoutcomeprofile.OutcomeIndicators;let idx=index;">
+
+                                                    <td>{{outcomeobj.IndicatorNumber}}</td>
+
+                                                    <td>{{outcomeobj.Title}}</td>
+
+                                                    <td>{{outcomeobj.StatusName}}</td>
+
+                                                    <td>
+
+                                                        <span class="icon-set">
+
+                                                            <a (click)="editIndicatorProfile(outcomeobj)"><i class="fa fa-pencil fa-sm"></i></a>
+
+                                                            <a (click)="showAlert(outcomeobj , idx)"><i class="fa fa-trash fa-sm"></i></a>
+
+                                                        </span>
+
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <p id="test">
+
+                                <a (click)="gotoProfileindcator()" class="active ng-link"><i class="fa fa-plus-circle"></i> Add Indicators</a>
+
+                            </p>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="text-left btn-back">
+
+                                    <a style="color: #0275d8;" class="ng-link" (click)="backPageConnect('BackbtnSave')">
+
+                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Back
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="text-right btn-actions">
+
+                                    <button type="button" class="btn btn-primary" id="btn_submit" (click)="btnSave('Continue')">Save</button>
+
+                                    <button type="button" class="btn btn-secondary" (click)="doCancel()">Cancel</button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div class="alert alert-danger" *ngFor="let error of Application_errors">
+
+                                {{error}}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <app-confirmationdialog (delete_Record)="deleteIndicator()"> </app-confirmationdialog>
+
+</ng-template>
+
+ 
+
+Project outcome Profile.ts
+
+ 
+
+import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
+
+import { ActivatedRoute, Router, Params } from '@angular/router';
+
+import { FormGroup, Validators, FormBuilder, FormArray, FormControl } from '@angular/forms'
+
+import { WebapiService } from '../../../services/webapi.service';
+
+import { constants } from '../../../constants/constants'
+
+import "rxjs/add/operator/takeUntil";
+
+import { Subject } from "rxjs/Subject";
+
+//import { uniqBy } from "lodash"
+
+import { filter, pullAt, clone, keys, flatMap, pullAll, includes, map, pull, forEach, last, extend, remove } from 'lodash';
+
+import { SummernoteDirective } from '../../../directive/summernote.directive';
+
+import { DynamicformComponent } from '../../shared/dynamicform/dynamicform.component'
+
+import { getLocaleDateTimeFormat } from '@angular/common/src/i18n/locale_data_api';
+
+import { confirmationdialogComponent } from '../../shared/confirmationdialog/confirmationdialog.component'
+
+declare var $: any;
+
+ 
+
+@Component({
+
+    selector: 'projectoutcomeprofile',
+
+    templateUrl: './projectoutcomeprofile.component.html'
+
+ 
+
+})
+
+export class ProjectoutcomeProfileComponent implements OnInit {
+
+ 
+
+    private unsubscribe: Subject<any> = new Subject();
+
+ 
+
+    outcmePillar: any;
+
+    tocValues: any;
+
+    itemID: any;
+
+    projectoutcomeprofile: any;
+
+    Application_errors: any = [];
+
+    @ViewChildren(SummernoteDirective) summer_directive;
+
+    @ViewChild(DynamicformComponent) dynamicComponent;
+
+    @ViewChild(confirmationdialogComponent) confirmdialog;
+
+    loadingComplete: any = false;
+
+    showOutcomeIndicators: any = false;
+
+    canCreate: boolean = false;
+
+    ProjectID: any;
+
+    projectname: any;
+
+    strFiletypes: string = "";
+
+    Document: FormArray;
+
+    documentArray: any = [""];
+
+    dockNameForUrl: any = "";
+
+    resultsArchitectureTOCImagesURL: any = "";
+
+    deletedIndicatorProfile: any = [];
+
+    deleteindicatorProfile_data: any;
+
+    Delete_obj: any;
+
+    Delete_index: any;
+
+    projectPlanDetails: any;
+
+    projectPlanDescriptionDetails: any;
+
+    CountryName: any = "";
+
+    RegionName: any = "";
+
+    FundingSource: any = "";
+
+    MemberName: any = "";
+
+    outcomeTypes: any = [];
+
+    outcomeStatus: any = [];
+
+    resultsArchitectureTOCImg: any = "";
+
+    ProjectOutcomeProfile_Form: FormGroup;
+
+ 
+
+    constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private service: WebapiService,
+
+        private router: Router) { }
+
+ 
+
+    ngOnInit() {
+
+        this.getPillarDetails();
+
+        this.getMemberMapping();
+
+        this.getProjectname();
+
+        this.outcomeStatus = this.getDDvalues().outcomeStatus;
+
+        this.outcomeTypes = this.getDDvalues().outcomeTypes;
+
+        this.strFiletypes = constants.strFiletypes;
+
+        this.route.params.subscribe(params => {
+
+            if (params.id) {
+
+                this.itemID = params.id;
+
+                this.getProjectID(this.itemID);
+
+                if (constants.outcomeID != "") {
+
+                    this.getProjectoutcomeprofile();
+
+ 
+
+                } else {
+
+                    this.loadingComplete = true;
+
+                    this.buildreactiveform();
+
+                    //this.getProjectoutcomeprofile();
+
+                }
+
+                this.disableAddindicator();
+
+            }
+
+            else {
+
+                this.loadingComplete = true;
+
+                this.buildreactiveform();
+
+            }
+
+ 
+
+        });
+
+ 
+
+ 
+
+        $('#btn_submit').attr('disabled', false);
+
+    }
+
+ 
+
+    getProjectID(ItemID) {
+
+        let retrieveData = { "guid": ItemID }
+
+        this.getDescriptionDetails(ItemID);
+
+        let Data = this.service.ApiController(retrieveData, constants.PluginCGAPGetProjectbyProjectDetail, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            let result = data.output;
+
+            this.getProjectPlanID(result);
+
+        });
+
+    }
+
+    getProjectPlanID(projectID) {
+
+ 
+
+        let retrieveData = { "guid": projectID, "pageno": "page1", "stagename": "projectplan" }
+
+        this.service.ApiController(retrieveData, constants.PluginRetrieveProject, constants.PostMethod, constants.ControllerAPI).subscribe((data) => {
+
+            setTimeout(() => {
+
+                if (!this.isEmpty(data.output)) {
+
+                    this.projectPlanDetails = JSON.parse(data.output);
+
+                    if (this.projectPlanDetails.ProjectFundingSource && this.projectPlanDetails.ProjectFundingSource.length > 0) {
+
+                        this.projectPlanDetails.ProjectFundingSource.forEach(item => {
+
+                            if (this.FundingSource == "") {
+
+                                this.FundingSource = item.FundingSource;
+
+                            }
+
+                            else {
+
+                                this.FundingSource = this.FundingSource + ", " + item.FundingSource;
+
+                            }
+
+                        });
+
+                    }
+
+                    //CountryName
+
+                    if (this.projectPlanDetails.ProjectCountry && this.projectPlanDetails.ProjectCountry.length > 0) {
+
+                        this.projectPlanDetails.ProjectCountry.forEach(item => {
+
+                            if (this.CountryName == "") {
+
+                                this.CountryName = item.CountryName;
+
+                            }
+
+                            else {
+
+                                this.CountryName = this.CountryName + ", " + item.CountryName;
+
+                            }
+
+                        });
+
+                    }
+
+                    //RegionName
+
+                    if (this.projectPlanDetails.ProjectRegion && this.projectPlanDetails.ProjectRegion.length > 0) {
+
+                        this.projectPlanDetails.ProjectRegion.forEach(item => {
+
+                            if (this.RegionName == "") {
+
+                                this.RegionName = item.RegionName;
+
+                            }
+
+                            else {
+
+                                this.RegionName = this.RegionName + ", " + item.RegionName;
+
+                            }
+
+                        });
+
+                    }
+
+                }
+
+            }, 100)
+
+        })
+
+    }
+
+ 
+
+    getDescriptionDetails(ItemID) {
+
+        let retrieveData = { "guid": ItemID, "pageno": "page2", "stagename": "projectplan" }
+
+        this.service.ApiController(retrieveData, constants.PluginRetrieveProject, constants.PostMethod, constants.ControllerAPI).subscribe((data) => {
+
+            if (!this.isEmpty(data.output)) {
+
+                this.projectPlanDescriptionDetails = JSON.parse(data.output);
+
+                if (this.projectPlanDescriptionDetails.PartnerMemberEngagement && this.projectPlanDescriptionDetails.PartnerMemberEngagement.length > 0) {
+
+                    this.projectPlanDescriptionDetails.PartnerMemberEngagement.forEach(item => {
+
+                        if (this.MemberName == "") {
+
+                            this.MemberName = item.PartnerMemberName;
+
+                        }
+
+                        else {
+
+                            this.MemberName = this.MemberName + ", " + item.PartnerMemberName;
+
+                        }
+
+                    });
+
+                }
+
+            }
+
+        });
+
+    }
+
+    setSelectedName(pCtrl, pVal, options) {
+
+        this.ProjectOutcomeProfile_Form.get(pCtrl).setValue(options[pVal - 1].cgap_name);
+
+    }
+
+ 
+
+    disableAddindicator() {
+
+        if (this.isEmpty(constants.OutcomeprofileID)) {
+
+            // $("#test").addClass("disableadd");
+
+            this.canCreate = false;
+
+        }
+
+        else {
+
+            this.canCreate = true;
+
+        }
+
+    }
+
+ 
+
+ 
+
+ 
+
+    buildreactiveform(obj?) {
+
+        if (obj) {
+
+ 
+
+            this.ProjectOutcomeProfile_Form = this.formBuilder.group({
+
+ 
+
+                ProjectDetailID: obj.ProjectDetailID,
+
+                OutcomeProfileID: constants.OutcomeprofileID,
+
+                OutcomeName: [obj.OutcomeName ? obj.OutcomeName : '', Validators.required],
+
+                OutcomeTypeID: [obj.OutcomeTypeID ? obj.OutcomeTypeID : '', Validators.required],
+
+                OutcomeTypeName: obj.OutcomeTypeName ? obj.OutcomeTypeName : '',
+
+                OutcomeStatusID: [obj.OutcomeStatusID ? obj.OutcomeStatusID : '', Validators.required],
+
+                OutcomeStatusName: obj.OutcomeStatusName,
+<div d

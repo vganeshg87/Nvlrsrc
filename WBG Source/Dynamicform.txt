@@ -1,0 +1,582 @@
+<form [formGroup]="dynamic_Form">
+
+    <div class="row">
+
+        <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+            <div class="table-responsive" id="dynamicData">
+
+                <table class="table table-hover table-bordered table-striped">
+
+                    <thead>
+
+                        <tr>
+
+                            <th *ngFor="let headers of tableHeaders">{{headers}}</th>                           
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody formArrayName="dynamic_Formarray">
+
+ 
+
+                        <tr [formGroupName]="i" *ngFor="let ctrlobj of getControls(dynamic_Form,'dynamic_Formarray'); let i=index;">
+
+ 
+
+ 
+
+                            <td *ngIf="ctrlobj.value['EditMode'] == 'false';then viewTemplate else editTemplate"></td>
+
+ 
+
+                            <ng-template #viewTemplate>                              
+
+                                <td>{{ctrlobj.value[resolveHeadersViewTmp[0]]}}</td>
+
+                                <td>{{ctrlobj.value[resolveHeadersViewTmp[1]]}}</td>
+
+                                <td *ngIf="resolveHeadersViewTmp[2]">{{ctrlobj.value[resolveHeadersViewTmp[2]]}}</td>
+
+                                <td *ngIf="resolveHeadersViewTmp[3]">{{ctrlobj.value[resolveHeadersViewTmp[3]]}}</td>
+
+                                <td class="">
+
+                                    <span class="icon-set">
+
+                                        <a href="" (click)="SetEditMode(i)"><i class="fa fa-pencil fa-sm"></i></a>
+
+                                        <a href="" (click)="removeRow(i)"><i class="fa fa-trash fa-sm"></i></a>
+
+                                    </span>
+
+                                </td>
+
+                            </ng-template>
+
+ 
+
+                            <ng-template #editTemplate>
+
+ 
+
+                                <ng-container *ngFor="let controlName of controls;let z = index">
+
+ 
+
+                                    <ng-container [ngSwitch]="type[z]">
+
+                                        <td *ngSwitchCase="'input'">
+
+                                            <div class="col-lg-8">
+
+                                                <div class="form-group">
+
+                                                    <input type="text" class="form-control" [formControlName]="controlName" />
+
+                                                </div>
+
+                                            </div>
+
+ 
+
+                                        </td>
+
+                                        <td *ngSwitchCase="'number'">
+
+                                            <div class="col-lg-8">
+
+                                                <div class="form-group">
+
+                                                    <!--<input type="number" class="form-control" [formControlName]="controlName" />-->
+
+                                                    <input class="form-control" OnlyNumber="true" DecimalPlaces="2" minValue="1.00" maxValue="999999999.00" [formControlName]="controlName" />
+
+                                                </div>
+
+                                            </div>
+
+ 
+
+                                        </td>
+
+                                        <td *ngSwitchCase="'select'">
+
+ 
+
+                                            <div class="col-lg-8">
+
+                                                <div class="select-wrapper selectminwidth">
+
+                                                    <select class="form-control" [formControlName]="controlName" (change)="selectOptionValue($event.target.value, controlName, options[z], i)">
+
+                                                        <option value="">Select</option>
+
+                                                        <option *ngFor="let optval of options[z]" [value]="optval.ID">
+
+                                                            {{optval.Title}}
+
+                                                        </option>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td *ngSwitchCase="'selectDepend'">
+
+                                            <div class="col-lg-8">
+
+                                                <div class="select-wrapper selectminwidth">
+
+                                                    <select class="form-control" [formControlName]="controlName" (change)="selectOptionValue($event.target.value, controlName, options[z][i], i)">
+
+                                                        <option value="">Select</option>
+
+                                                        <option *ngFor="let optval of options[z][i]" [value]="optval.ID">
+
+                                                            {{optval.Title}}
+
+                                                        </option>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td *ngSwitchCase="'selectPartner'">
+
+ 
+
+                                            <div class="col-lg-8" style="width:300px">
+
+                                                <div class="select-wrapper selectminwidth">
+
+                                                    <select class="form-control" [formControlName]="controlName" (change)="selectOptionValue($event.target.value, controlName, options[z], i)">
+
+                                                        <option value="">Select</option>
+
+                                                        <option *ngFor="let optval of options[z]" [value]="optval.ID">
+
+                                                            {{optval.Title}}
+
+                                                        </option>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+                                    </ng-container>
+
+                                </ng-container>
+
+ 
+
+                                <td class="">
+
+                                    <span class="icon-set">
+
+                                        <a href="" (click)="removeRow(i, controls)"><i class="fa fa-trash fa-sm"></i></a>
+
+                                    </span>
+
+                                </td>
+
+                            </ng-template>
+
+ 
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+ 
+
+ 
+
+    <hr>
+
+    <p>
+
+        <a href="" (click)="createFunding(true)"><i class="fa fa-plus-circle"></i> Add New</a>
+
+    </p>
+
+</form>
+
+
+Dynaic form.ts
+
+ 
+
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { FormGroup, Validators, FormBuilder, FormArray, FormControl } from '@angular/forms'
+
+import { flatMap, remove, filter, includes } from "lodash"
+
+ 
+
+ 
+
+@Component({
+
+    selector: 'app-dynamicform',
+
+    templateUrl: './dynamicform.component.html',
+
+ 
+
+})
+
+export class DynamicformComponent implements OnInit {
+
+ 
+
+    @Input() data;
+
+    @Input() resolveHeadersViewTmp;
+
+    @Input() controls;
+
+    @Input() type;
+
+    @Input() options;
+
+    @Input() tableHeaders;
+
+    @Input() deleteFiledName;
+
+    @Input() getLength;
+
+ 
+
+    @Output() delete_Record = new EventEmitter();
+
+    @Output() select_Record = new EventEmitter();
+
+    @Output() add_Record = new EventEmitter();
+
+ 
+
+    dynamic_Form: FormGroup;
+
+    dynamicCtrl: any;
+
+ 
+
+    constructor(private formBuilder: FormBuilder) { }
+
+ 
+
+    ngOnInit() {
+
+ 
+
+ 
+
+        this.dynamic_Form = this.formBuilder.group(
+
+            {
+
+ 
+
+                dynamic_Formarray: new FormArray([])
+
+            });
+
+ 
+
+        this.dynamicCtrl = <FormArray>this.dynamic_Form.get('dynamic_Formarray');
+
+ 
+
+ 
+
+ 
+
+        if (this.data[0].NewForm.value == false) {
+
+            this.createFunding(false);
+
+        }
+
+ 
+
+ 
+
+    }
+
+ 
+
+    getControls(Form, FormArray) {
+
+ 
+
+ 
+
+        return Form.get(FormArray).controls;
+
+ 
+
+    }
+
+ 
+
+    createFunding(addNew) {
+
+ 
+
+ 
+
+        if (addNew == false) {
+
+            for (let prop of Object.keys(this.data)) {
+
+ 
+
+                this.dynamicCtrl.push(this.createFundingctrls(prop, true));
+
+            }
+
+        }
+
+ 
+
+        else {
+
+            this.dynamicCtrl.push(this.createFundingctrls(0, false));
+
+        }
+
+        this.add_Record.emit(this.getLength);
+
+        console.log(this.options);
+
+ 
+
+    }
+
+ 
+
+    createFundingctrls(index, valueExists) {
+
+ 
+
+ 
+
+        const formarrayValues = {};
+
+        let getFormctrlsValues: any;
+
+ 
+
+        if (valueExists == true) {
+
+            getFormctrlsValues = flatMap(this.data[index], (n) => [{ Name: n.name, Value: n.value, Required: n.required }]);
+
+ 
+
+        }
+
+        else {
+
+            getFormctrlsValues = flatMap(this.data[index], (n) => [{ Name: n.name, Required: n.required }]);
+
+ 
+
+        }
+
+ 
+
+        for (let x of getFormctrlsValues) {
+
+ 
+
+ 
+
+            switch (x.Name) {
+
+                case "omitted":
+
+                    break;
+
+ 
+
+                default:
+
+                    formarrayValues[x.Name] = new FormControl(x.Value ? x.Value : '', x.Required ? Validators.required : null)
+
+ 
+
+            }
+
+            if (x.Name == "FundingType" && x.Value) {
+
+                let getValue = x.Value;
+
+                this.select_Record.emit({ getValue, index });
+
+            } else if (x.Name == "PartnerID" && x.Value) {
+
+                let getValue = x.Value;
+
+                this.select_Record.emit({ getValue, index });
+
+            }
+
+ 
+
+        }
+
+        return this.formBuilder.group(formarrayValues);
+
+ 
+
+    }
+
+ 
+
+    SetEditMode(index) {
+
+ 
+
+        this.dynamicCtrl.controls[index].controls.EditMode.setValue('true');
+
+ 
+
+   }
+
+ 
+
+    selectOptionValue(getValue, controlName, options, index) {
+
+        var id = controlName.slice(-2);
+
+        if (id.toLowerCase() == 'id') {
+
+            controlName = controlName.substring(0, controlName.length - 2);
+
+        }
+
+        //if (controlName != 'FundingSource') {
+
+        controlName = controlName + "Name";
+
+        //}
+
+        //this[controlName] = 
+
+        if (getValue != "" && getValue != null) {
+
+            var name = options.filter(item => item.ID == getValue)[0].Title;
+
+            //this.items = this.dynamicCtrl.get('dynamic_Formarray') as FormArray;
+
+            if (controlName != "PartnerTypeName") {
+
+                this.dynamicCtrl.controls[index].controls[controlName].setValue(name);
+
+            }
+
+        }
+
+        if (controlName == "FundingTypeName") {
+
+            if (!getValue) {
+
+                this.dynamicCtrl.controls[index].controls['FundingSourceName'].setValue(null);
+
+                this.dynamicCtrl.controls[index].controls['FundingSourceID'].setValue(null);
+
+           }
+
+            this.select_Record.emit({ getValue, index });
+
+ 
+
+        } else if (controlName == "PartnerName") {
+
+            if (!getValue) {
+
+                this.dynamicCtrl.controls[index].controls['PartnerID'].setValue(null);
+
+                this.dynamicCtrl.controls[index].controls['PartnerName'].setValue(null);
+
+                this.dynamicCtrl.controls[index].controls['PartnerType'].setValue(null);
+
+            }
+
+            this.select_Record.emit({ getValue, index });
+
+        }
+
+ 
+
+    }
+
+ 
+
+    removeRow(index, controls) {
+
+        if (controls != undefined) { 
+
+        console.log('controls', controls)
+
+        let data = controls.filter(item => item == 'FundingType').length > 0;
+
+        if (data) {
+
+            let getValue = "Remove";
+
+            this.select_Record.emit({ getValue, index });
+
+            this.dynamicCtrl.controls[index].controls['FundingSourceName'].setValue(null);
+
+            this.dynamicCtrl.controls[index].controls['FundingSourceID'].setValue(null);
+
+        } else if (controls[0] == 'PartnerID') {
+
+            let getValue = "Remove";
+
+            this.select_Record.emit({ getValue, index });
+
+            this.dynamicCtrl.controls[index].controls['PartnerID'].setValue(null);
+
+            this.dynamicCtrl.controls[index].controls['PartnerName'].setValue(null);
+
+            this.dynamicCtrl.controls[index].controls['PartnerType'].setValue(null);
+
+        }
+
+    }
+
+        this.delete_Record.emit(this.dynamicCtrl.controls[index].controls);
+
+        this.dynamicCtrl.removeAt(index);
+
+    }
+
+ 
+
+}

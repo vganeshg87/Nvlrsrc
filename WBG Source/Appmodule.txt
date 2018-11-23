@@ -1,0 +1,75 @@
+App sharedmodule.ts
+
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+
+import { CommonModule } from '@angular/common';
+
+import { FormsModule } from '@angular/forms';
+
+import { HttpModule } from '@angular/http';
+
+import { ModalModule } from 'ngx-bootstrap/modal';
+
+import { TabsModule } from 'ngx-bootstrap/tabs';
+
+import { AppComponent } from './components/app/app.component';
+
+import { HeaderComponent } from './components/header/header.component';
+
+import { FooterComponent } from './components/footer/footer.component';
+
+import { LeftnavComponent } from './components/leftnav/leftnav.component';
+
+import { AppRoutingModule } from './app-routing.module';
+
+import { HomeComponent } from './components/home/home.component';
+
+import { ProjectlistingComponent } from './components/projectlisting/projectlisting.component';
+
+import { confirmationdialogComponent } from './components/shared/confirmationdialog/confirmationdialog.component'
+
+import { WebapiService } from './services/webapi.service';
+
+import { ResolveService } from './services/resolve.service';
+
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+import { authService } from './services/auth.service';
+
+import { ItsocComponentsModule } from "itsoccomponents";
+
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+ 
+
+ 
+
+@NgModule({
+
+    declarations: [
+
+        AppComponent, HeaderComponent, FooterComponent, LeftnavComponent, HomeComponent, ProjectlistingComponent, confirmationdialogComponent
+
+    ],
+
+    imports: [
+
+        CommonModule,
+
+        HttpModule,
+
+        FormsModule, AppRoutingModule, PaginationModule.forRoot(), BsDatepickerModule.forRoot(), ItsocComponentsModule.forRoot(), ModalModule.forRoot(), TabsModule.forRoot()
+
+    ],
+
+    providers: [WebapiService, ResolveService, authService],
+
+    schemas: [NO_ERRORS_SCHEMA]
+
+})
+
+export class AppModuleShared {
+
+}

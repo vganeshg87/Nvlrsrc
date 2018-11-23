@@ -1,0 +1,1875 @@
+Proj Desc
+
+ 
+
+<div *ngIf="loadingComplete;then showData else showLoading">
+
+</div>
+
+<ng-template #showLoading>
+
+    <div class="loadingspinner">
+
+        <itsoc-loading-spinner> </itsoc-loading-spinner>
+
+    </div>
+
+</ng-template>
+
+<ng-template #showData>
+
+    <app-breadcrumb *ngIf="!isPreview" (eventEmit)="breadCrumb_operation($event)"></app-breadcrumb>
+
+    <div id="content" *ngIf="!isPreview">
+
+        <app-stageindicator [parentData]="['PP', projectPlanDetails.ProjectDetailID, projectPlanDetails.ProjectID]"></app-stageindicator>
+
+        <form [formGroup]="ProjectPlanBasic_Form">
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                    <div class="body-content">
+
+                        <!--<app-floatingmenu (click)="showToggle($event)"></app-floatingmenu>-->
+
+                        <h1 class="page-heading" style="margin:20px 0 5px 0 !important">Basic Information</h1>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">CGAP Project ID</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" disabled formControlName="CGAPProjectID">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">WB Project ID</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="WBProjectID">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                           <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Project Name</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="ProjectName">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Project Acronym</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="ProjectAcronym">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Project Stage</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" disabled formControlName="ProjectStageName">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Primary Pillar</label>
+
+                                    <div class="select-wrapper">
+
+                                        <select class="form-control" formControlName="PrimaryPillarID" (change)="setSelectedName('PrimaryPillar',$event,$event.target.selectedIndex, primaryPillar,'cgap_pillarid')">
+
+                                            <option value="">Select</option>
+
+                                            <option *ngFor="let optval of primaryPillar" [value]="optval.cgap_pillarid">
+
+                                                {{optval.cgap_name}}
+
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="">Pillar Lead</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" disabled formControlName="PillarLead">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Secondary Pillar</label>
+
+                                    <div class="select-wrapper">
+
+                                        <select class="form-control" formControlName="SecondaryPillarID" (change)="setSelectedName('SecondaryPillar',$event,$event.target.selectedIndex, primaryPillar,'cgap_pillarid')">
+
+                                            <option value="">Select</option>
+
+                                            <option *ngFor="let optval of primaryPillar" [value]="optval.cgap_pillarid">
+
+                                                {{optval.cgap_name}}
+
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="">Project Phase</label>
+
+                                    <div class="select-wrapper">
+
+                                        <!--<select class="form-control" formControlName="ProjectPhaseID">
+
+                        <option value="">Select</option>
+
+                        <option [value]="644010000">Identify Challenge & Opportunity</option>
+
+                        <option [value]="644010001">Build Foundational Research & Evidence Base</option>
+
+                        <option [value]="644010002">Demonstration Projects with Partners</option>
+
+                        <option [value]="644010003">Share Insights & Findings</option>
+
+                    </select>-->
+
+                                        <select class="form-control" formControlName="ProjectPhaseID" (change)="setSelectedName('ProjectPhaseName',$event, $event.target.selectedIndex, projectPhases,'cgap_id')">
+
+                                            <option value="">Select</option>
+
+                                            <option *ngFor="let pp of projectPhases" [value]="pp.cgap_id">
+
+                                                {{pp.cgap_name}}
+
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Budget ($)</label>
+
+                                    <!--<input type="number" class="form-control" id="" placeholder="" formControlName="Budget">-->
+
+                                    <input class="form-control" OnlyNumber="true" DecimalPlaces="2" minValue="1.00" maxValue="999999999.00" formControlName="Budget" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-12">
+
+                                <div class="row">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                        <div class="form-group">
+
+                                            <label for="">Project Start Date</label>
+
+                                            <input type="text" class="form-control control-datepkr" bsDatepicker id="" placeholder="" formControlName="ProjectStartDate">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                        <div class="form-group">
+
+                                            <label for="">Project End Date</label>
+
+                                            <input type="text" class="form-control control-datepkr" bsDatepicker id="" placeholder="" formControlName="ProjectEndDate">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">WBS Elements</label>
+
+                                    <input type="text" class="form-control" id="" placeholder="" formControlName="WBSElements">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-5">
+
+                                <div class="form-group">
+
+                                    <label for="">TOC Mapping</label>
+
+                                    <input type="text" disabled class="form-control" id="" placeholder="" formControlName="TOCName">
+
+                                    <!--<div class="select-wrapper">
+
+                <itsoc-select [multiple]="true" [options]="tocMapping" [(ngModel)]="tocModel" [ngModelOptions]="{standalone: true}" disabled></itsoc-select>
+
+ 
+
+                                        </div>-->
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Link to Other Projects</label>
+
+                                    <div class="select-wrapper">
+
+                                        <itsoc-select [multiple]="true" [options]="getLinkToProjectsList" [(ngModel)]="tagLinkToProjectsSelection" [ngModelOptions]="{standalone: true}" (deselected)="multipleEvent_LTO_ddl()" (selected)="multipleEvent_LTO_ddl()"></itsoc-select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Link to other Projects - Comments</label>
+
+                                    <textarea formControlName='LinkToOtherProjectsComments' appSummernote></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!--<div class="row">
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+            <div class="form-group">
+
+                <label for="">Tags</label>
+
+                <div class="select-wrapper">
+
+                    <select class="form-control" formControlName="TagID">
+
+                        <option value="" disabled>Select</option>
+
+                        <option *ngFor="let optval of tagsGet" [value]="optval.cgap_rftagid">
+
+                            {{optval.cgap_name}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>-->
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label for="">Tags</label>
+
+                                    <div class="select-wrapper">
+
+                                        <itsoc-select [multiple]="true" [options]="tagsGet" [(ngModel)]="tagSelectionList" [ngModelOptions]="{standalone: true}" (deselected)="multipleEvent_deselect_Tag_LTO_ddl($event)" (selected)="multipleEvent_Tag_LTO_ddl()"></itsoc-select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="Fundtypes">
+
+                            <app-dynamicform [data]="dynamicInput" [resolveHeadersViewTmp]="['FundingTypeName','FundingSourceName','','','EditMode']" [controls]="['FundingType','FundingSourceID']" [type]="['select','selectDepend']" [options]="[Fundtypes,Fundsources]" [tableHeaders]="['Funding Type Name','Funding Source','Actions']" (delete_Record)="deleteItem($event.ProjectFundingSourceID.value,'cgap_projectfund')" (select_Record)="selectFundItem($event)"> </app-dynamicform>
+
+                        </div>
+
+                        <hr>
+
+                        <div *ngIf="regionList">
+
+                            <app-dynamicform [data]="dynamicRegionInput" [resolveHeadersViewTmp]="['RegionName','RegionEstimatedLOE','','','EditMode']" [controls]="['RegionID','RegionEstimatedLOE']" [type]="['select','number']" [options]="[regionList]" [tableHeaders]="['Region Name','Region Estimated LOE (%)','Actions']" [deleteFiledName]="cgap_projectregion" (delete_Record)="deleteItem($event.ProjectRegionID.value,'cgap_projectregion')"> </app-dynamicform>
+
+                       </div>
+
+                        <hr>
+
+                        <div *ngIf="countryList">
+
+                            <app-dynamicform [data]="dynamicCountryInput" [resolveHeadersViewTmp]="['CountryName','CountryLOE','','','EditMode']" [controls]="['CountryID','CountryLOE']" [type]="['select','number']" [options]="[countryList]" [tableHeaders]="['Country Name','Country Estimated LOE (%)','Actions']" (delete_Record)="deleteItem($event.ProjectCountryID.value,'cgap_projectcountry')"> </app-dynamicform>
+
+                        </div>
+
+ 
+
+                        <hr>
+
+                        <div class="row">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                <div class="text-right btn-actions">
+
+                                    <button type="button" class="btn btn-primary" (click)="Preview()">Preview</button>
+
+                                    <button type="button" class="btn btn-primary" (click)="btnsave('Exit')">Save & Exit</button>
+
+                                   <button type="button" class="btn btn-primary" (click)="btnsave('continue')" id="btn_submit">Save & Continue</button>
+
+                                    <button type="button" class="btn btn-secondary" routerLink="/Home">Cancel</button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div class="alert alert-danger" *ngFor="let error of Application_errors">
+
+                                {{error}}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <app-project-review *ngIf="isPreview" [parentData]="['1', projectPlanDetails, ProjectPlanBasic_Form.value]" (childEmit)="readEmittedValue($event)"></app-project-review>
+
+</ng-template>
+
+ 
+
+Proj desc.ts
+
+ 
+
+import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
+
+import { FormGroup, Validators, FormBuilder, FormArray, FormControl } from '@angular/forms'
+
+import { ActivatedRoute, Router, Params } from '@angular/router';
+
+import { WebapiService } from '../../../services/webapi.service';
+
+import { constants } from '../../../constants/constants'
+
+import "rxjs/add/operator/takeUntil";
+
+import { Subject } from "rxjs/Subject";
+
+//import { uniqBy } from "lodash"
+
+import { flatMap, remove, filter, includes, extend } from "lodash"
+
+import { SummernoteDirective } from '../../../directive/summernote.directive';
+
+import { DynamicformComponent } from '../../shared/dynamicform/dynamicform.component'
+
+import { AppComponent } from '../../../components/app/app.component'
+
+import { floatingmenuComponent } from '../../shared/floatingmenu/floatingmenu.component';
+
+declare var $: any;
+
+@Component({
+
+    selector: 'app-basicinformation',
+
+    templateUrl: './basicinformation.component.html'
+
+})
+
+export class BasicinformationComponent implements OnInit {
+
+ 
+
+    @ViewChildren(SummernoteDirective) summer_directive;
+
+    @ViewChildren(DynamicformComponent) dynamicComponent;
+
+    @ViewChild(floatingmenuComponent) floatingmenu;
+
+ 
+
+    loadingComplete: any = false;
+
+    maxDate: Date;
+
+    public ProjectPlanBasic_Form: FormGroup;
+
+    primaryPillar: any = [];
+
+    getFilterData: any = [];
+
+    tocMapping: any;
+
+    tocModel: any;
+
+    tocGetMapping: any;
+
+    tagsGet: any;
+
+    tagLinkToProjectsSelection: any;
+
+    tagSelectionList: any;
+
+    getTagsSaveList: any = [];
+
+    getLTOTagsSaveList: any = [];
+
+    getFinalTagsSaveList: any = [];
+
+    getProjectID: any;
+
+    selectPillarName: any;
+
+    itemToDelete: any = [];
+
+    dynamicCtrl: any = [];
+
+    getLinkToOtherProjectsList: any = [];
+
+    Fundtypes: any;
+
+    Fundsources: any = [];
+
+    projectPlanDetails: any;
+
+    regionList: any;
+
+    countryList: any = [];
+
+    getLinkToProjectsList: any;
+
+    getPillarName: any;
+
+    lotProjects: any = [];
+
+    getlotProjects: any = [];
+
+    tagGetListProjects: any = [];
+
+    dynamicInput: any = [];
+
+    dynamicCountryInput: any = [];
+
+    dynamicRegionInput: any = [];
+
+    Application_errors: any = [];
+
+    getTOCListFromOutcome: any = [];
+
+    setUniqueDataGetList = [];
+
+    TocGetData: any = [];
+
+    initialSampleCountryList: any;
+
+    unFilterData: any;
+
+    sampleUnfilterData: any;
+
+    checkValues: any = [];
+
+    getCountryList: any;
+
+    isPreview: boolean = false;
+
+    projectPhases: any = [];
+
+    getTagList: any = '';
+
+    TOCName: any = "";
+
+ 
+
+    private unsubscribe: Subject<any> = new Subject();
+
+    constructor(private route: ActivatedRoute,
+
+        private router: Router, private formBuilder: FormBuilder, private service: WebapiService, private appcomponent: AppComponent) { }
+
+ 
+
+ 
+
+    ngOnInit() {
+
+        // this.appcomponent.pagecontent.nativeElement.style.marginTop = "100px";
+
+        this.maxDate = new Date();
+
+        this.maxDate.setDate(this.maxDate.getDate() + 0);
+
+ 
+
+        this.projectPhases = this.getDDvalues().ProjectPhases;
+
+        this.getPillarDetails();
+
+        this.getTocMapping();
+
+        this.getFundingType();
+
+      //  this.getFundingSource();
+
+        this.getTagsMapping();
+
+        this.getRegionList();
+
+        this.getIntialCountryList();
+
+        this.getLinkTOProjects();
+
+ 
+
+ 
+
+        this.route.params.subscribe(params => {
+
+            if (!this.isEmpty(params.id)) {
+
+                this.getProjectPlanID(params.id);
+
+                this.getProjectID = params.id;
+
+                constants.getProjectID = this.getProjectID;
+
+ 
+
+            }
+
+            else {
+
+                this.loadingComplete = true;
+
+                this.buildReactiveForm();
+
+ 
+
+            }
+
+ 
+
+        })
+
+        $('#btn_submit').attr('disabled', false);
+
+    }
+
+ 
+
+    ngOnDestroy() {
+
+ 
+
+        this.unsubscribe.next();
+
+        this.unsubscribe.complete();
+
+    }
+
+ 
+
+    buildReactiveForm(Obj?) {
+
+        if (Obj) {
+
+ 
+
+            this.ProjectPlanBasic_Form = this.formBuilder.group(
+
+                {
+
+                    ProjectPlanBasicID: Obj.ProjectPlanBasicID ? Obj.ProjectPlanBasicID : '',
+
+                    ProjectPhaseID: Obj.ProjectPhaseID ? Obj.ProjectPhaseID : '',
+
+                    ProjectPhaseName: Obj.ProjectPhaseName ? Obj.ProjectPhaseName : '',
+
+                    WBSElements: Obj.WBSElements ? Obj.WBSElements : '',
+
+                    LinkToOtherProjects: [Obj.LinkToOtherProjects ? Obj.LinkToOtherProjects : ''],
+
+                    LinkToOtherProjectsComments: Obj.LinkToOtherProjectsComments ? Obj.LinkToOtherProjectsComments : '',
+
+                    TagID: Obj.TagID ? Obj.TagID : '',
+
+                    Tag: [Obj.Tag ? Obj.Tag : ''],
+
+                    ProjectID: Obj.ProjectID ? Obj.ProjectID : '',
+
+                    ProjectDetailID: Obj.ProjectDetailID ? Obj.ProjectDetailID : '',
+
+                    WBProjectID: [Obj.WBProjectID ? Obj.WBProjectID : '', Validators.required],
+
+                    CGAPProjectID: [Obj.CGAPProjectID ? Obj.CGAPProjectID : '', Validators.required],
+
+                    ProjectName: [Obj.ProjectName ? Obj.ProjectName : '', Validators.required],
+
+                    ProjectAcronym: [Obj.ProjectAcronym ? Obj.ProjectAcronym : '', Validators.required],
+
+                    ProjectStage: '644010001',
+
+                    ProjectStageName: 'Project Plan',
+
+                    PrimaryPillar: Obj.PrimaryPillar ? Obj.PrimaryPillar : '',
+
+                    PrimaryPillarID: [Obj.PrimaryPillarID ? Obj.PrimaryPillarID : '', Validators.required],
+
+                    SecondaryPillar: Obj.SecondaryPillar ? Obj.SecondaryPillar : '',
+
+                    SecondaryPillarID: Obj.SecondaryPillarID ? Obj.SecondaryPillarID : '',
+
+                    PillarLead: [Obj.PillarLead ? Obj.PillarLead : '', Validators.required],
+
+                    Budget: [Obj.Budget ? Obj.Budget : '', Validators.required],
+
+                    ProjectStartDate: [Obj.ProjectStartDate ? Obj.ProjectStartDate : '', Validators.required],
+
+                    ProjectEndDate: [Obj.ProjectEndDate ? Obj.ProjectEndDate : '', Validators.required],
+
+                    ProjectTOC: Obj.ProjectTOC ? Obj.ProjectTOC : '',
+
+                    ProjectFundingSource: [Obj.ProjectFundingSource ? Obj.ProjectFundingSource : '', Validators.required],
+
+                    ProjectRegion: [Obj.ProjectRegion ? Obj.ProjectRegion : '', Validators.required],
+
+                    ProjectCountry: [Obj.ProjectCountry ? Obj.ProjectCountry : '', Validators.required],
+
+                    ProjectStatus: '',
+
+                    ProjectStatusName: '',
+
+                    TTLID: Obj.TTLID,
+
+                    LearningQuestions: Obj.LearningQuestions,
+
+                    TOCName: ''
+
+                });
+
+            this.DynamicFormManipulation(Obj);
+
+            //if (!this.isEmpty(Obj.ProjectFundingSource)) {
+
+            //    for (let key of Obj.ProjectFundingSource) {
+
+            //        this.dynamicInput.push(this.inputToDynamicForm(key))
+
+            //    }
+
+            //}
+
+            //else {
+
+            //    this.dynamicInput.push(this.inputToDynamicForm())
+
+            //}
+
+ 
+
+ 
+
+            //if (!this.isEmpty(Obj.ProjectCountry)) {
+
+            //    for (let key of Obj.ProjectCountry) {
+
+            //        this.dynamicCountryInput.push(this.countryInputToDynamicForm(key))
+
+            //    }
+
+            //}
+
+            //else {
+
+            //    this.dynamicCountryInput.push(this.countryInputToDynamicForm())
+
+            //}
+
+ 
+
+            //if (!this.isEmpty(Obj.ProjectRegion)) {
+
+            //    console.log(Obj.ProjectRegion);
+
+            //    console.log(this.initialSampleCountryList);
+
+ 
+
+            //    for (let key of Obj.ProjectRegion) {
+
+            //        this.dynamicRegionInput.push(this.regionInputToDynamicForm(key))
+
+            //    }
+
+            //    Obj.ProjectRegion.forEach((d, index) => {
+
+            //        this.unFilterData = '';
+
+            //        this.sampleUnfilterData = '';
+
+            //        this.checkValues.push(d.ProjectRegionID);
+
+            //        this.unFilterData = filter(this.initialSampleCountryList, (data) => data._cgap_regioncodes_value == d.RegionID);
+
+            //        this.sampleUnfilterData = flatMap(this.unFilterData, (n) => [{
+
+            //            Title: n.cgap_name, ID: n.cgap_cgapcountryid
+
+            //        }])
+
+            //        if (this.sampleUnfilterData.length != 0) {
+
+            //            this.sampleUnfilterData.forEach((d, index) => {
+
+            //                this.countryList.push(d);
+
+            //            })
+
+            //        }
+
+            //    })
+
+            //}
+
+            //else {
+
+            //    this.dynamicRegionInput.push(this.regionInputToDynamicForm())
+
+            //}
+
+ 
+
+ 
+
+            if (!this.isEmpty(Obj.ProjectTOC)) {
+
+ 
+
+                this.tocModel = flatMap(Obj.ProjectTOC, (n) => n.TOCID);
+
+                Obj.ProjectTOC.forEach((d, index) => {
+
+                    if (!this.TOCName) {
+
+                        this.TOCName = d.TOCName;
+
+                    }
+
+                    else {
+
+                        this.TOCName = this.TOCName + ", " + d.TOCName;
+
+                    }
+
+                    let getSingleTOCData = { OutcomeID: '', ProjectID: '', ProjectTOCID: '', TOCID: '', TOCName: '' }
+
+                    getSingleTOCData.OutcomeID = d.OutcomeID;
+
+                    getSingleTOCData.ProjectID = d.ProjectID;
+
+                    getSingleTOCData.ProjectTOCID = d.ProjectTOCID;
+
+                    getSingleTOCData.TOCID = d.TOCID;
+
+                    getSingleTOCData.TOCName = d.TOCName;
+
+                    this.TocGetData.push(getSingleTOCData);
+
+                });
+
+                this.ProjectPlanBasic_Form.get('TOCName').setValue(this.TOCName);
+
+ 
+
+            }
+
+            if (!this.isEmpty(Obj.LinkToOtherProjects)) {
+
+                this.lotProjects = Obj.LinkToOtherProjects;
+
+                this.getlotProjects = Obj.LinkToOtherProjects;
+
+                this.tagLinkToProjectsSelection = flatMap(Obj.LinkToOtherProjects, (n) => n.ProjectToID);
+
+ 
+
+            }
+
+            if (!this.isEmpty(Obj.Tag)) {
+
+                this.tagSelectionList = flatMap(Obj.Tag, (n) => n.TagID);
+
+                this.getTagList = Obj.Tag;
+
+            }
+
+        }
+
+        else {
+
+            this.ProjectPlanBasic_Form = this.formBuilder.group(
+
+                {
+
+                    ProjectPlanBasicID: null,
+
+                    ProjectPhaseID: null,
+
+                    ProjectPhaseName: null,
+
+                    WBSElements: null,
+
+                    LinkToOtherProjects: [],
+
+                    LinkToOtherProjectsComments: null,
+
+                    TagID: null,
+
+                    Tag: [],
+
+                    ProjectRegion: ['', Validators.required],
+
+                    ProjectCountry: ['', Validators.required],
+
+                    ProjectID: this.getProjectID,
+
+                    ProjectDetailID: [null, Validators.required],
+
+                    WBProjectID: [null, Validators.required],
+
+                    CGAPProjectID: [null, Validators.required],
+
+                    ProjectName: [null, Validators.required],
+
+                    ProjectAcronym: [null, Validators.required],
+
+                    ProjectStage: '644010001',
+
+                    ProjectStageName: 'Project Plan',
+
+                    PrimaryPillar: [null, Validators.required],
+
+                    PrimaryPillarID: [null, Validators.required],
+
+                    SecondaryPillar: null,
+
+                    SecondaryPillarID: null,
+
+                    PillarLead: [null, Validators.required],
+
+                    Budget: [null, Validators.required],
+
+                    ProjectStartDate: [null, Validators.required],
+
+                    ProjectEndDate: [null, Validators.required],
+
+                    ProjectTOC: null,
+
+                    ProjectFundingSource: ['', Validators.required],
+
+                    ProjectStatus: "644010000",
+
+                    ProjectStatusName: null,
+
+                    TTLID: null,
+
+                    TOCName:''
+
+                });
+
+            this.dynamicInput.push(this.inputToDynamicForm());
+
+            this.dynamicCountryInput.push(this.countryInputToDynamicForm());
+
+            this.dynamicRegionInput.push(this.regionInputToDynamicForm());
+
+ 
+
+        }
+
+ 
+
+    }
+
+    inputToDynamicForm(ProjectFundingSource?) {
+
+        return {
+
+            FundingType: {
+
+ 
+
+                name: 'FundingType',
+
+                value: ProjectFundingSource ? ProjectFundingSource.FundingType : '',
+
+            },
+
+            FundingSourceID: {
+
+ 
+
+                name: 'FundingSourceID',
+
+                value: ProjectFundingSource ? ProjectFundingSource.FundingSourceID : '',
+
+ 
+
+            },
+
+            ProjectDetailID: {
+
+                name: 'ProjectDetailID',
+
+                value: ProjectFundingSource ? ProjectFundingSource.ProjectDetailID : this.getProjectID
+
+            },
+
+            ProjectFundingSourceID: {
+
+                name: 'ProjectFundingSourceID',
+
+                value: ProjectFundingSource ? ProjectFundingSource.ProjectFundingSourceID : ''
+
+            },
+
+            FundingSource: {
+
+                name: 'FundingSourceName',
+
+                value: ProjectFundingSource ? ProjectFundingSource.FundingSource : ''
+
+            },
+
+            FundingTypeName: {
+
+                name: 'FundingTypeName',
+
+                value: ProjectFundingSource ? ProjectFundingSource.FundingTypeName : ''
+
+            },
+
+            EditMode: {
+
+                name: 'EditMode',
+
+                value: 'false'
+
+            },
+
+            NewForm: {
+
+                name: 'omitted',
+
+                value: ProjectFundingSource ? false : true
+
+            }
+
+ 
+
+        }
+
+    }
+
+ 
+
+    countryInputToDynamicForm(Country?) {
+
+        return {
+
+            CountryName: {
+
+                name: 'CountryName',
+
+                value: Country ? Country.CountryName : ''
+
+            },
+
+            CountryID: {
+
+                name: 'CountryID',
+
+                value: Country ? Country.CountryID : ''
+
+            },
+
+            CountryLOE: {
+
+                name: 'CountryLOE',
+
+                value: Country ? Country.CountryLOE : ''
+
+            },
+
+            ProjectDetailID: {
+
+                name: 'ProjectDetailID',
+
+                value: Country ? Country.ProjectDetailID : this.getProjectID
+
+            },
+
+            ProjectCountryID: {
+
+                name: 'ProjectCountryID',
+
+                value: Country ? Country.ProjectCountryID : ''
+
+            },
+
+            DeliverableCountryID: {
+
+                name: 'DeliverableCountryID',
+
+                value: Country ? Country.DeliverableCountryID : ''
+
+            },
+
+            ProjectDeliverableID: {
+
+                name: 'ProjectDeliverableID',
+
+                value: Country ? Country.ProjectDeliverableID : ''
+
+            },
+
+            EditMode: {
+
+                name: 'EditMode',
+
+                value: 'false'
+
+            },
+
+            NewForm: {
+
+                name: 'omitted',
+
+                value: Country ? false : true
+
+            }
+
+        }
+
+    }
+
+    regionInputToDynamicForm(Region?) {
+
+        return {
+
+            ProjectRegionID: {
+
+                name: 'ProjectRegionID',
+
+                value: Region ? Region.ProjectRegionID : ''
+
+            },
+
+            RegionName: {
+
+                name: 'RegionName',
+
+                value: Region ? Region.RegionName : ''
+
+            },
+
+            RegionID: {
+
+                name: 'RegionID',
+
+                value: Region ? Region.RegionID : ''
+
+            },
+
+            RegionEstimatedLOE: {
+
+                name: 'RegionEstimatedLOE',
+
+                value: Region ? Region.RegionEstimatedLOE : ''
+
+            },
+
+            ProjectDetailID: {
+
+                name: 'ProjectDetailID',
+
+                value: Region ? Region.ProjectDetailID : this.getProjectID
+
+            },
+
+            ProjectDeliverableID: {
+
+                name: 'ProjectDeliverableID',
+
+                value: Region ? Region.ProjectDeliverableID : ''
+
+            },
+
+            DeliverableRegionID: {
+
+                name: 'DeliverableRegionID',
+
+                value: Region ? Region.DeliverableRegionID : ''
+
+            },
+
+            EditMode: {
+
+                name: 'EditMode',
+
+                value: 'false'
+
+            },
+
+            NewForm: {
+
+                name: 'omitted',
+
+                value: Region ? false : true
+
+            }
+
+        }
+
+    }
+
+ 
+
+    selectPillarDetail(pillarDetail) {
+
+ 
+
+        this.primaryPillar.forEach((pillar, index) => {
+
+            if (pillar.cgap_pillarid == pillarDetail) {
+
+                this.getPillarName = pillar.cgap_name;
+
+                console.log(this.getPillarName);
+
+            }
+
+        });
+
+        let getPillarNameForLead = "cgap_pillars?$select=_cgap_pillarleadupi_value&$expand=cgap_PillarLeadUPI($select=cgap_name)&$filter=cgap_name eq '" + this.getPillarName + "' and  statuscode eq 1"
+
+        this.service.ApiController(null, getPillarNameForLead, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.ProjectPlanBasic_Form.controls.PillarLead.setValue(data.value[0].cgap_PillarLeadUPI.cgap_name);
+
+        });
+
+    }
+
+ 
+
+ 
+
+    getPillarDetails() {
+
+        this.service.ApiController(null, constants.PluginCGAPPillars, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.primaryPillar = data.value;
+
+        });
+
+    }
+
+ 
+
+    getTocMapping() {
+
+        this.service.ApiController(null, constants.PluginCGAPTocMapping, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.tocGetMapping = data.value;
+
+            this.tocMapping = flatMap(data.value, (n) => [{ label: n.cgap_name, value: n.cgap_rftocid, TOC: n.cgap_name, TOCID: n.cgap_rftocid }]);
+
+ 
+
+        });
+
+    }
+
+ 
+
+    getFundingType() {
+
+        this.service.ApiController(null, constants.PluginCGAPGetOptionSet, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.Fundtypes = flatMap(data.Options, (n) => [{
+
+                Title: n.Label.UserLocalizedLabel.Label, ID: n.Value
+
+            }])
+
+        });
+
+    }
+
+ 
+
+    //getFundingSource() {
+
+    //    this.service.ApiController(null, constants.PluginCGAPFundingSource, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+ 
+
+    //        this.Fundsources = flatMap(data.value, (n) => [{
+
+    //            Title: n.cgap_name, ID: n.cgap_rffundingsourceid
+
+    //        }])
+
+    //    });
+
+    //}
+
+ 
+
+    getRegionList() {
+
+        this.service.ApiController(null, constants.PluginCGAPGetRegionList, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+ 
+
+            this.regionList = flatMap(data.value, (n) => [{
+
+                Title: n.cgap_regionname, ID: n.cgap_regionid
+
+            }])
+
+ 
+
+        });
+
+    }
+
+ 
+
+    getIntialCountryList() {
+
+        this.service.ApiController(null, constants.PluginCGAPGetCountryList, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.initialSampleCountryList = data.value;
+
+            this.countryList = flatMap(data.value, (n) => [{
+
+                Title: n.cgap_name, ID: n.cgap_cgapcountryid, value: n.cgap_cgapcountryid
+
+            }])         
+
+        });
+
+    }
+
+ 
+
+    getLinkTOProjects() {
+
+        this.service.ApiController(null, constants.getLinkToProjectsList, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.getLinkToProjectsList = flatMap(data.value, (n) => [{
+
+                Title: n.cgap_projectname, value: n.cgap_projectid
+
+                , label: n.cgap_projectname, ID: n.cgap_projectid
+
+            }])
+
+            if (this.getLinkToProjectsList.length != 0) {
+
+                remove(this.getLinkToProjectsList, (data) => data.ID == constants.getProjectID)                
+
+            }
+
+        });
+
+    }
+
+ 
+
+    getTagsMapping() {
+
+        this.service.ApiController(null, constants.PluginCGAPGetTagsSet, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            this.tagsGet = flatMap(data.value, (n) => [{
+
+                Title: n.cgap_name, value: n.cgap_rftagid
+
+                , label: n.cgap_name, ID: n.cgap_rftagid
+
+            }])
+
+        });
+
+        //this.tocMapping = flatMap(data.value, (n) => [{ label: n.cgap_name, value: n.cgap_name, TOC: n.cgap_name, ProjectID: '', TOCID: n.cgap_rftocid }]);
+
+ 
+
+    }
+
+ 
+
+    getProjectPlanID(projectID) {
+
+ 
+
+        let retrieveData = { "guid": projectID, "pageno": "page1", "stagename": "projectplan" }
+
+        this.service.ApiController(retrieveData, constants.PluginRetrieveProject, constants.PostMethod, constants.ControllerAPI).subscribe((data) => {
+
+            setTimeout(() => {
+
+                if (!this.isEmpty(data.output)) {
+
+                    this.projectPlanDetails = JSON.parse(data.output);
+
+                    //console.log(this.projectPlanDetails);
+
+                    constants.getProjectDetailID = this.projectPlanDetails.ProjectDetailID;
+
+                    this.buildReactiveForm(this.projectPlanDetails);
+
+                    this.loadingComplete = true;
+
+                    // this.getTOCFromOutCome(this.projectPlanDetails.ProjectDetailID);
+
+                }
+
+            }, 5000)
+
+        })
+
+    }
+
+    showFormErros(formGroup: FormGroup) {
+
+ 
+
+        this.Application_errors = []
+
+     
+
+        Object.keys(formGroup.controls).forEach(field => {
+
+            let errorCount = '';
+
+            const control = formGroup.get(field);
+
+            if (control instanceof FormControl) {
+
+                if (!this.isEmpty(control.errors))
+
+                    this.Application_errors.push(field + " is required");
+
+            }
+
+            if (field == 'ProjectFundingSource' || field == 'ProjectRegion' || field == 'ProjectCountry') {
+
+                if (field == 'ProjectFundingSource') {
+
+                    errorCount = filter(control.value, (a) => a.FundingType == '' || a.FundingSourceID == '')
+
+                } else if (field == 'ProjectRegion') {
+
+                    errorCount = filter(control.value, (a) => a.RegionID == '')
+
+                } else if (field == 'ProjectCountry') {
+
+                    errorCount = filter(control.value, (a) => a.CountryID == '')
+
+                }             
+
+                
+
+            }
+
+            if (errorCount != '') {
+
+                this.Application_errors.push(field + " is required");               
+
+            }
+
+        });
+
+ 
+
+    }
+
+ 
+
+    createTOCctrls() {
+
+        return this.formBuilder.group(
+
+            {
+
+                ProjectID: '',
+
+                ProjectTOCID: '',
+
+                Name: '',
+
+            })
+
+    }
+
+ 
+
+    showToggle(event) {
+
+        this.floatingmenu.toggleRightMenu(event, constants.getProjectDetailID);
+
+    }
+
+ 
+
+    multipleEvent_LTO_ddl() {
+
+        this.lotProjects = filter(this.getLinkToProjectsList, (data) => includes(this.tagLinkToProjectsSelection, data.value));
+
+    }
+
+    multipleEvent_Tag_LTO_ddl() {
+
+        this.tagGetListProjects = filter(this.tagsGet, (data) => includes(this.tagSelectionList, data.value));
+
+    } 
+
+    multipleEvent_deselect_Tag_LTO_ddl(event) {        
+
+        let projectTag = filter(this.ProjectPlanBasic_Form.value.Tag, (data) => data.TagID == event.ID)
+
+        this.itemToDelete.push({ "GUID": projectTag[0].ProjectTagID, "Entityname": 'cgap_projecttag' })
+
+        remove(this.ProjectPlanBasic_Form.value.Tag, (data) => data.TagID == event.ID)
+
+    }
+
+    deleteItem(ControlValue, EntityName) {
+
+ 
+
+        if (!this.service.isEmpty(ControlValue))
+
+            this.itemToDelete.push({ "GUID": ControlValue, "Entityname": EntityName })
+
+    }
+
+    selectFundItem(fundSourceID) {
+
+        let getFundsource = '';
+
+        if (fundSourceID.getValue != '' && (fundSourceID.getValue == '644010000' || fundSourceID.getValue == '644010001')) {
+
+ 
+
+            let getCountryAPIURL = 'cgap_rffundingsources?$select=cgap_fundingtype,cgap_name,cgap_remarks,cgap_rffundingsourceid,cgap_trustfundname&$filter=cgap_fundingtype eq ' + fundSourceID.getValue + 'and  statuscode eq 1&$orderby=cgap_name asc'
+
+            this.service.ApiController(null, getCountryAPIURL, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                console.log(data.value)
+
+                getFundsource = flatMap(data.value, (n) => [{
+
+                    Title: n.cgap_name, ID: n.cgap_rffundingsourceid
+
+                }])
+
+                this.Fundsources[fundSourceID.index] = getFundsource;
+
+            })
+
+        } else if (fundSourceID.getValue == "Remove") {
+
+            this.Fundsources[fundSourceID.index] = [];
+
+            this.Fundsources.splice(fundSourceID.index, 1);
+
+        }
+
+        else if (fundSourceID.getValue == "") {
+
+            this.Fundsources[fundSourceID.index] = [];
+
+        }
+
+    } 
+
+ 
+
+    selectItem(ControlValue) {
+
+        if (this.checkValues.length == 0) {
+
+            this.checkValues.push(ControlValue);
+
+            if (!this.service.isEmpty(ControlValue)) {
+
+                this.getCountryList = '';
+
+                let getCountryAPIURL = 'cgap_cgapcountries?$select=cgap_cgapcountryid,cgap_countrycode,cgap_name&$filter=statuscode eq 1 and  _cgap_regioncodes_value eq ' + ControlValue;
+
+                this.service.ApiController(null, getCountryAPIURL, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                    this.getCountryList = data.value;
+
+                    this.getCountryList = flatMap(this.getCountryList, (n) => [{
+
+                        Title: n.cgap_name, ID: n.cgap_cgapcountryid
+
+                    }])
+
+                    if (this.getCountryList.length != 0) {
+
+                        this.getCountryList.forEach((d, index) => {
+
+                            this.countryList.push(d);
+
+                        })
+
+                    }
+
+                });
+
+            }
+
+        } else {
+
+            this.checkValues.forEach((a, index) => {
+
+                if (a != ControlValue) {
+
+                    this.checkValues.push(ControlValue);
+
+                    if (!this.service.isEmpty(ControlValue)) {
+
+                        this.getCountryList = '';
+
+                        let getCountryAPIURL = 'cgap_cgapcountries?$select=cgap_cgapcountryid,cgap_countrycode,cgap_name&$filter=statuscode eq 1 and  _cgap_regioncodes_value eq ' + ControlValue;
+
+                        this.service.ApiController(null, getCountryAPIURL, constants.GetMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                            this.getCountryList = data.value;
+
+                            this.getCountryList = flatMap(this.getCountryList, (n) => [{
+
+                                Title: n.cgap_name, ID: n.cgap_cgapcountryid
+
+                            }])
+
+                            if (this.getCountryList.length != 0) {
+
+                                this.getCountryList.forEach((d, index) => {
+
+                                    this.countryList.push(d);
+
+                                })
+
+                            }
+
+                        });
+
+                    }
+
+                }
+
+            })
+
+        }
+
+ 
+
+ 
+
+    }
+
+ 
+
+ 
+
+    isEmpty(value) {
+
+        return (value == null || value == undefined || value == '' || Object.keys(value).length == 0);
+
+    }
+
+    validateForm() {
+
+        let submitForm = false;
+
+ 
+
+        submitForm = this.dynamicComponentManipulation(submitForm);
+
+ 
+
+        return submitForm;
+
+    }
+
+    dynamicComponentManipulation(submitForm: boolean) {
+
+        if (this.dynamicComponent.first.dynamic_Form.status == "VALID") {    
+
+            let validfundCount = '';    
+
+            let validRegionCount = '';  
+
+            let validCountryCount = '';  
+
+            this.dynamicComponent.forEach(d => {                     
+
+                if (d.controls[0] == "FundingType") {
+
+                    this.ProjectPlanBasic_Form.controls.ProjectFundingSource.setValue(d.dynamicCtrl.value);
+
+                    validfundCount = filter(d.dynamicCtrl.value, (data) => data.FundingType == '' || data.FundingSourceID == '')                 
+
+                }
+
+                else if (d.controls[0] == "RegionID") {
+
+                    this.ProjectPlanBasic_Form.controls.ProjectRegion.setValue(d.dynamicCtrl.value);
+
+                    validRegionCount = filter(d.dynamicCtrl.value, (data) => data.RegionID == '')
+
+                }
+
+                else if (d.controls[0] == "CountryID") {
+
+                    this.ProjectPlanBasic_Form.controls.ProjectCountry.setValue(d.dynamicCtrl.value);
+
+                    validCountryCount = filter(d.dynamicCtrl.value, (data) => data.CountryID == '')
+
+                }
+
+            });
+
+            if (this.ProjectPlanBasic_Form.status == "VALID" && validfundCount == '' && validRegionCount == '' && validCountryCount == '') {
+
+                // Submit the form
+
+                submitForm = true;
+
+            }
+
+        }
+
+        else {
+
+            this.ProjectPlanBasic_Form.controls.ProjectFundingSource.setValue(null);
+
+            this.ProjectPlanBasic_Form.controls.ProjectRegion.setValue(null);
+
+            this.ProjectPlanBasic_Form.controls.ProjectCountry.setValue(null);
+
+        }
+
+        return submitForm;
+
+    }
+
+ 
+
+    breadCrumb_operation(event) {
+
+ 
+
+        //this event will have => {label: "Roadmap", path: "projectroadmap/c222d656-624c-e811-811f-5065f38a6bf2", operation: "Save"}
+
+ 
+
+        switch (event.operation) {
+
+            case "Save":
+
+                this.btnsave('save', event);
+
+                break;
+
+ 
+
+            case "DSave":
+
+                this.router.navigate([event.path])
+
+                break;
+
+        }
+
+    }
+
+ 
+
+    btnsave(operation, event?) {
+
+        this.BasicInfoManipulation();
+
+        if (this.validateForm()) {
+
+            if (!this.service.isEmpty(this.itemToDelete)) {
+
+ 
+
+                let deleteData = { "input": JSON.stringify(this.itemToDelete) }
+
+ 
+
+                this.service.ApiController(deleteData, constants.PluginCGAPDeleteRecord, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                    //console.log(data);
+
+                });
+
+            }
+
+ 
+
+ 
+
+            let data = { "input": JSON.stringify(this.ProjectPlanBasic_Form.value), "pageno": "page1" }
+
+            $('#btn_submit').attr('disabled', true);
+
+            this.loadingComplete = false;
+
+            this.service.ApiController(data, constants.PluginCreateProjectPlanProjects, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                let itemID = data.output;
+
+                $('#btn_submit').attr('disabled', false);
+
+                switch (operation) {
+
+                    case "Exit":
+
+                        this.router.navigate(['/Home'])
+
+                        break;
+
+ 
+
+                    case "continue":
+
+                        this.router.navigateByUrl("/projectplan/" + itemID + "/projectdescription");
+
+                        break;
+
+                    case "save":

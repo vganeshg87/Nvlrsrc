@@ -1,0 +1,269 @@
+<div [formGroup]="dockGrp">
+
+    <h6><strong>Documentation</strong></h6>
+
+    <div class="row">
+
+        <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped table-responsive-md table-responsive-sm">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Document Title</th>
+
+                            <th>Document Category</th>
+
+                            <th>Attachment/URL</th>
+
+                            <th></th>
+
+                            
+
+                        </tr>
+
+                    </thead>                    
+
+                    <tbody formArrayName="documents">
+
+                        <tr [formGroupName]="i" *ngFor="let dock of getControls(dockGrp.get('documents')); let i=index;">
+
+                            <td width="30%"> {{dock.DocumentTitle}} </td>
+
+                            <td width="30%"> {{dock.DocumentCategoryName}} </td>
+
+                            <td width="30%"><a href="#">{{dock.UploadFileURL}}</a></td>
+
+                            <td class="text-right">
+
+                                <span class="icon-set">
+
+                                    <a href="javascript:" (click)="showModal(dock.DocumentID,'Edit',i)" ><i class="fa fa-pencil fa-sm"></i></a>
+
+                                    <a href="javascript:" (click)="removeDock(i)"><i class="fa fa-trash fa-sm"></i></a>
+
+                                </span>
+
+                            </td>                            
+
+                        </tr>
+
+                    </tbody>
+
+                    
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div>
+
+        <a class="ng-link" href="void(0)" (click)="showModal('','New',0)"><i class="fa fa-upload"></i> Upload Attachments</a>
+
+ 
+
+        <div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal" class="modal fade" id="newDocument" tabindex="-1" role="dialog" aria-labelledby="newDocumentLabel" aria-hidden="true">
+
+            <form [formGroup]="addEditDock">
+
+                <div class="modal-dialog modal-lg" role="document">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h4 class="modal-title">Documentation</h4>
+
+                            <button type="button" class="close" aria-label="Close" (click)="hideModal()">
+
+                                <span aria-hidden="true">&times;</span>
+
+                            </button>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="">Document Title</label>
+
+                                        <input type="text" class="form-control" id="txtTitle" formControlName="DocumentTitle">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="">Document Category</label>
+
+                                        <div class="select-wrapper">
+
+                                            <select class="form-control" formControlName="DocumentCategory" (change)="setSelectedName('DocumentCategoryName',$event.target.selectedOptions[0].innerText)" >
+
+                                                <option value="" disabled>Select</option>
+
+                                                <option *ngFor="let dc of dockCategories" [value]="dc.value">{{dc.name}}</option>
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="">Document Classification</label>
+
+                                        <div class="select-wrapper">
+
+                                            <select class="form-control">
+
+                                                <option>Select</option>
+
+                                                <option>12</option>
+
+                                                <option>24</option>
+
+                                                <option>36</option>
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <!--<div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="">Document Date</label>
+
+                                        <input type="text" class="form-control" id="txtDockDate" formControlName="DocumentDate">
+
+                                    </div>
+
+                                </div>-->
+
+                            </div>
+
+                            <!--<div class="row">
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="">Aggrement Signed Date</label>
+
+                                        <input type="text" class="form-control" id="txtSignedDate" formControlName="SignedDate">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+
+                                        <label for="">Aggrement End Date</label>
+
+                                        <input type="text" class="form-control" id="txtEndDate" formControlName="EndDate">
+
+                                    </div>
+
+                                </div>
+
+                            </div>-->
+
+                            <div class="row">
+
+                                <div class="col-md-7">
+
+                                    <div class="form-group">
+
+                                        <label for="">Upload</label>
+
+                                        <input type="file" formControlName="UploadFile" [attr.disabled]="isDisabled? true : null" (change)="FileChange($event.target)">
+
+                                    </div>
+
+                                    <div><strong>Or</strong></div>
+
+                                    <label for="">URL</label>
+
+                                    <input type="text" class="form-control" formControlName="UploadFileURL" id="txtURL" [attr.disabled]="isDisabled? true : null">
+
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+                            <div>
+
+                                <div class="alert alert-danger" *ngIf="(!this.addEditDock.valid&&validationAlert)||validateDocuments">
+
+                                    Please fill the Mandatory fields.
+
+                                </div>
+
+                                <div class="alert alert-danger" *ngIf="!uniqDockTitle">
+
+                                    Document title should be unique.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <!--<p>Form values: {{ addEditDock.value | json }}</p>-->
+
+                            <button type="button" class="btn btn-primary" (click)="addDocktoArray()">Save</button>
+
+                            <button type="button" class="btn btn-secondary" (click)="hideModal()">Cancel</button>
+
+                        </div>
+
+                    </div>
+
+ 
+
+                </div>
+
+                
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

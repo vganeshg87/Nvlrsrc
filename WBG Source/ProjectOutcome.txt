@@ -1,0 +1,1083 @@
+Project Outcome 
+
+-----------------------
+
+<div *ngIf="loadingComplete;then showData else showLoading">
+
+</div>
+
+<ng-template #showLoading>
+
+    Loading
+
+</ng-template>
+
+<ng-template #showData>
+
+    <app-breadcrumb *ngIf="!isPreview" (eventEmit)="breadCrumb_operation($event)"></app-breadcrumb>
+
+    <div id="content" *ngIf="!isPreview">
+
+        <app-stageindicator *ngIf="itemID" [parentData]="['PP', itemID]"></app-stageindicator>
+
+        <form [formGroup]="Projectoutcome_Form">
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                    <div class="body-content">
+
+                        <app-floatingmenu (click)="showToggle($event)"></app-floatingmenu>
+
+                        <h1 class="page-heading">Project Outcomes</h1>
+
+                        <h5 class="page-subheading2">Overall Outcomes</h5><br />
+
+                        <label>Project Results chain </label>
+
+                        <div class="row" formArrayName="Document">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12" [formGroupName]="i" *ngFor="let doc of documentArray; let i=index;">
+
+                                <input type="file" title="" formControlName="UploadFile" [attr.accept]="strFiletypes" (change)="FileChange($event.target)">
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <span *ngIf="projectoutcome.ProjectResultsChain && !projectResultsChain"><a href="{{projectoutcome.ProjectResultsChain}}" data-toggle="tooltip" title="{{projectoutcome.ProjectResultsChain}}" target="_blank">{{dockNameForUrl}}</a></span>
+
+                                <span *ngIf="projectResultsChain">{{projectResultsChain}}</span>
+
+                            </div>
+
+                        </div><br />
+
+                        <div class="row">
+
+                            <div class="col-lg-11 col-md-11 col-sm-11 col-12">
+
+                                <div class="form-group">
+
+                                    <label>Project Result chain - Narrative</label>
+
+                                    <textarea formControlName="ResultChainNarrative" rows="5" appSummernote></textarea>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="">Results Chain Assumptions</label>
+
+                                    <textarea formControlName="ResultsChainAssumptions" rows="5" appSummernote></textarea>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="">Project Results Chains Summary (For Annual Workplan)</label>
+
+                                    <textarea formControlName="ResultChainSummary" rows="5" appSummernote></textarea>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="">List of Expected Project Outcomes</label>
+
+                                    <textarea formControlName="ListofExpectedProjectOutcomes" rows="5" appSummernote></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+
+                            <h2 class="page-heading col-lg-6 col-md-6 col-sm-6 col-12">Individual Outcomes</h2>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover table-bordered table-striped">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th>Project Acronym</th>
+
+                                                <th>Outcome Name</th>
+
+                                                <th>Pillar</th>
+
+                                                <th>Outcome Type</th>
+
+                                                <th>Outcome Status</th>
+
+                                                <th width="8%">Action</th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr *ngFor="let ctrlobj of projectoutcome.IndividualOutcomes; let idx=index;">
+
+                                                <td>{{ctrlobj.ProjectAcronym}}</td>
+
+                                                <td>{{ctrlobj.OutcomeName}}</td>
+
+                                                <td>{{ctrlobj.OutcomePillarName}}</td>
+
+                                                <td>{{ctrlobj.OutcomeTypeName}}</td>
+
+                                                <td>{{ctrlobj.OutcomeStatusName}}</td>
+
+                                                <td>
+
+                                                    <span class="icon-set">
+
+                                                        <a (click)="editProjectoutcome(ctrlobj)"><i class="fa fa-pencil fa-sm"></i></a>
+
+                                                        <a (click)="showAlert(ctrlobj , idx)"><i class="fa fa-trash fa-sm"></i></a>
+
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+
+                                            <tr *ngIf="(!projectoutcome || !projectoutcome.IndividualOutcomes) || projectoutcome.IndividualOutcomes.length == 0"><td colspan="6">No Data</td></tr>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div><br />
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <button type="button" class="btn btn-primary" (click)="createProfile()">Create</button>
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="text-left btn-back">
+
+                                    <a style="color: #0275d8;" class="ng-link" (click)="backPageConnect('BackbtnSave')">
+
+                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Back
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                                <div class="text-right btn-actions">
+
+                                    <button type="button" class="btn btn-primary" (click)="Preview()">Preview</button>
+
+                                    <button type="button" class="btn btn-primary" (click)="btnSave('Exit')">Save & Exit</button>
+
+                                    <button type="button" class="btn btn-primary" id="btn_submit" (click)="btnSave('Continue')">Save & Continue</button>
+
+                                    <button type="button" class="btn btn-secondary" routerLink="/Home">Cancel</button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div class="alert alert-danger" *ngFor="let error of Application_errors">
+
+                                {{error}}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <app-confirmationdialog *ngIf="!isPreview" (delete_Record)="deleteProjectoutcome()"> </app-confirmationdialog>
+
+    <app-project-review *ngIf="isPreview" [parentData]="['3', projectoutcome, Projectoutcome_Form.value]" (childEmit)="readEmittedValue($event)"></app-project-review>
+
+</ng-template>
+
+ 
+
+Project outcome.ts
+
+ 
+
+import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
+
+import { FormGroup, Validators, FormBuilder, FormArray, FormControl } from '@angular/forms'
+
+import { ActivatedRoute, Router, Params } from '@angular/router';
+
+import { WebapiService } from '../../../services/webapi.service';
+
+import { constants } from '../../../constants/constants'
+
+import "rxjs/add/operator/takeUntil";
+
+import { Subject } from "rxjs/Subject";
+
+//import { uniqBy } from "lodash"
+
+import { filter, pullAt, clone, keys, flatMap, pullAll, includes, map, pull, forEach, last, extend, remove } from 'lodash';
+
+import { SummernoteDirective } from '../../../directive/summernote.directive';
+
+import { DynamicformComponent } from '../../shared/dynamicform/dynamicform.component'
+
+import { confirmationdialogComponent } from '../../shared/confirmationdialog/confirmationdialog.component'
+
+import { floatingmenuComponent } from '../../shared/floatingmenu/floatingmenu.component';
+
+declare var $: any
+
+@Component({
+
+    selector: 'app-projectoutcomes',
+
+    templateUrl: './projectoutcomes.component.html'
+
+ 
+
+})
+
+export class ProjectoutcomesComponent implements OnInit {
+
+ 
+
+    @ViewChildren(SummernoteDirective) summer_directive;
+
+    @ViewChild(confirmationdialogComponent) confirmdialog;
+
+    @ViewChild(floatingmenuComponent) floatingmenu;
+
+    Projectoutcome_Form: FormGroup;
+
+    itemID: any;
+
+    projectoutcome: any;
+
+    Application_errors: any = [];
+
+    loadingComplete: any = false;
+
+    strFiletypes: string = "";
+
+    Document: FormArray;
+
+    documentArray: any = [""];
+
+    dockNameForUrl: any = "";
+
+    DeletedProjectoutcome: any = [];
+
+    showalertbox = false;
+
+    Delete_obj: any;
+
+    Delete_index: any;
+
+    isPreview: boolean = false;
+
+    projectPlanDetails: any;
+
+    projectPlanDescriptionDetails: any;
+
+    CountryName: any = "";
+
+    RegionName: any = "";
+
+    FundingSource: any = "";
+
+    MemberName: any = "";
+
+    projectResultsChain: any = "";
+
+    private unsubscribe: Subject<any> = new Subject();
+
+ 
+
+    constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private service: WebapiService,
+
+        private router: Router) { }
+
+ 
+
+ 
+
+ 
+
+    buildReactiveForm(Obj?) {
+
+        if (Obj) {
+
+            this.Projectoutcome_Form = this.formBuilder.group(
+
+                {
+
+                    ProjectDetailID: Obj.ProjectDetailID,
+
+                    ProjectResultsChain: Obj.ProjectResultsChain,
+
+                    ResultChainNarrative: [Obj.ResultChainNarrative, Validators.required],
+
+                    ResultsChainAssumptions: [Obj.ResultsChainAssumptions, Validators.required],
+
+                    ResultChainSummary: [Obj.ResultChainSummary, Validators.required],
+
+                    ListofExpectedProjectOutcomes: [Obj.ListofExpectedProjectOutcomes, Validators.required],
+
+                    IndividualOutcomes: Obj.IndividualOutcomes,
+
+                    Document: this.formBuilder.array([])
+
+                })
+
+            this.Document = this.Projectoutcome_Form.get('Document') as FormArray;
+
+            this.Document.push(this.createItem());
+
+            if (Obj.ProjectResultsChain) {
+
+                this.dockNameForUrl = last(Obj.ProjectResultsChain.split("/"));
+
+            }
+
+        }
+
+        else {
+
+            this.Projectoutcome_Form = this.formBuilder.group(
+
+                {
+
+                    ProjectDetailID: '',
+
+                    ProjectResultsChain: [null, Validators.required],
+
+                    ResultChainNarrative: [null, Validators.required],
+
+                    ResultsChainAssumptions: [null, Validators.required],
+
+                    ResultChainSummary: [null, Validators.required],
+
+                    ListofExpectedProjectOutcomes: [null, Validators.required],
+
+                    IndividualOutcomes: '',
+
+                    Document: this.formBuilder.array([])
+
+                });
+
+            this.Document = this.Projectoutcome_Form.get('Document') as FormArray;
+
+            this.Document.push(this.createItem());
+
+        }
+
+    }
+
+ 
+
+    ngOnInit() {
+
+        this.strFiletypes = constants.strFiletypes;
+
+        this.route.params.subscribe(params => {
+
+            if (params.id) {
+
+                this.itemID = params.id;
+
+                this.getProjectoutcome(this.itemID);
+
+                this.getProjectID(this.itemID);
+
+            }
+
+            else {
+
+                this.loadingComplete = true;
+
+                this.buildReactiveForm();
+
+            }
+
+        });
+
+ 
+
+        $('#btn_submit').attr('disabled', false);
+
+    }
+
+ 
+
+    showToggle(event) {
+
+        this.floatingmenu.toggleRightMenu(event, this.itemID);
+
+    }
+
+ 
+
+    getProjectID(ItemID) {
+
+        let retrieveData = { "guid": ItemID }
+
+        this.getDescriptionDetails(ItemID);
+
+        let Data = this.service.ApiController(retrieveData, constants.PluginCGAPGetProjectbyProjectDetail, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            let result = data.output;
+
+            this.getProjectPlanID(result); 
+
+        });
+
+    }
+
+    getProjectPlanID(projectID) {
+
+ 
+
+        let retrieveData = { "guid": projectID, "pageno": "page1", "stagename": "projectplan" }
+
+        this.service.ApiController(retrieveData, constants.PluginRetrieveProject, constants.PostMethod, constants.ControllerAPI).subscribe((data) => {
+
+            setTimeout(() => {
+
+                if (!this.isEmpty(data.output)) {
+
+                    this.projectPlanDetails = JSON.parse(data.output);
+
+                    if (this.projectPlanDetails.ProjectFundingSource && this.projectPlanDetails.ProjectFundingSource.length > 0) {
+
+                        this.projectPlanDetails.ProjectFundingSource.forEach(item => {
+
+                            if (this.FundingSource == "") {
+
+                                this.FundingSource = item.FundingSource;
+
+                            }
+
+                            else {
+
+                                this.FundingSource = this.FundingSource + ", " + item.FundingSource;
+
+                            }
+
+                        });
+
+                    }
+
+                    //CountryName
+
+                    if (this.projectPlanDetails.ProjectCountry && this.projectPlanDetails.ProjectCountry.length > 0) {
+
+                        this.projectPlanDetails.ProjectCountry.forEach(item => {
+
+                            if (this.CountryName == "") {
+
+                                this.CountryName = item.CountryName;
+
+                            }
+
+                            else {
+
+                                this.CountryName = this.CountryName + ", " + item.CountryName;
+
+                            }
+
+                        });
+
+                    }
+
+                    //RegionName
+
+                    if (this.projectPlanDetails.ProjectRegion && this.projectPlanDetails.ProjectRegion.length > 0) {
+
+                        this.projectPlanDetails.ProjectRegion.forEach(item => {
+
+                            if (this.RegionName == "") {
+
+                                this.RegionName = item.RegionName;
+
+                            }
+
+                            else {
+
+                                this.RegionName = this.RegionName + ", " + item.RegionName;
+
+                            }
+
+                        });
+
+                    }
+
+                }
+
+            }, 100)
+
+        })
+
+    }
+
+ 
+
+    getDescriptionDetails(ItemID) {
+
+        let retrieveData = { "guid": ItemID, "pageno": "page2", "stagename": "projectplan" }
+
+        this.service.ApiController(retrieveData, constants.PluginRetrieveProject, constants.PostMethod, constants.ControllerAPI).subscribe((data) => {
+
+            if (!this.isEmpty(data.output)) {
+
+                this.projectPlanDescriptionDetails = JSON.parse(data.output);
+
+                if (this.projectPlanDescriptionDetails.PartnerMemberEngagement && this.projectPlanDescriptionDetails.PartnerMemberEngagement.length > 0) {
+
+                    this.projectPlanDescriptionDetails.PartnerMemberEngagement.forEach(item => {
+
+                        if (this.MemberName == "") {
+
+                            this.MemberName = item.PartnerMemberName;
+
+                        }
+
+                        else {
+
+                            this.MemberName = this.MemberName + ", " + item.PartnerMemberName;
+
+                        }
+
+                    });
+
+                }
+
+            }
+
+        });
+
+    } 
+
+ 
+
+    saveNextPage() {
+
+        this.router.navigate(['/projectplan/' + this.itemID + '/projectdeliverables']);
+
+    }
+
+    createItem(obj?): FormGroup {
+
+        if (obj) {
+
+            return this.formBuilder.group({
+
+                ProjectDetailID: this.itemID,
+
+                UploadFileURL: '',
+
+                FileBlob: '',
+
+                UploadFile: '',
+
+                DocumentTitle: ''
+
+            });
+
+        }
+
+        else {
+
+            return this.formBuilder.group({
+
+                ProjectDetailID: this.itemID,
+
+                UploadFileURL: '',
+
+                FileBlob: '',
+
+                UploadFile: '',
+
+                DocumentTitle: ''
+
+            });
+
+        }
+
+    }
+
+ 
+
+    FileChange(event) {
+
+        //  this.Projectoutcome_Form.get('Document')
+
+        let fileExt = event.files[0].name.split('.').pop();
+
+        if (this.strFiletypes.indexOf((fileExt.toLowerCase())) !== -1) {
+
+            let updatedFilename = 'PP' + "_" + event.files[0].name;
+
+            this.Projectoutcome_Form.controls['ProjectResultsChain'].setValue(updatedFilename);
+
+            this.projectResultsChain = updatedFilename;
+
+            this.Document = this.Projectoutcome_Form.get('Document') as FormArray;
+
+            this.Document.controls[0]['controls']['FileBlob'].setValue(event.files[0]);
+
+            this.Document.controls[0]['controls']["UploadFileURL"].setValue(updatedFilename);
+
+            this.Document.controls[0]['controls']["DocumentTitle"].setValue(event.files[0].name.split('.').slice(0, -1).join('.'));
+
+ 
+
+        }
+
+        else {
+
+            this.Document = this.Projectoutcome_Form.get('Document') as FormArray;
+
+            this.Projectoutcome_Form.controls['ProjectResultsChain'].setValue("");
+
+            this.projectResultsChain = "";
+
+            this.Document.controls[0]['controls']["UploadFile"].setValue("");
+
+            this.Document.controls[0]['controls']["UploadFileURL"].setValue("");
+
+            this.Document.controls[0]['controls']["FileBlob"].setValue("");
+
+            this.Document.controls[0]['controls']["DocumentTitle"].setValue('');
+
+        }
+
+ 
+
+    }
+
+ 
+
+ 
+
+    createProfile() {
+
+        constants.outcomeID = "";
+
+        this.btnSave("Outcome");
+
+    }
+
+ 
+
+    backPageConnect(savemethod) {
+
+      //  this.btnSave('save', savemethod);
+
+        this.router.navigateByUrl("/projectplan/" + this.itemID + "/projectdescription");
+
+    }
+
+ 
+
+    editProjectoutcome(val) {
+
+        constants.outcomeID = val.IndividualOutcomesID;
+
+        this.router.navigate(['/projectplan/' + this.itemID + '/projectoutcomeprofile']);
+
+    }
+
+ 
+
+    isEmpty(value) {
+
+        return (value == null || value == undefined || value == '' || Object.keys(value).length == 0);
+
+    }
+
+    getProjectoutcome(GuId) {
+
+ 
+
+        let retrieveData = { "guid": this.itemID }
+
+        console.log(retrieveData);
+
+        this.service.ApiController(retrieveData, constants.getProjectoutcome, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+            if (!this.isEmpty(data.output)) {
+
+ 
+
+                this.projectoutcome = JSON.parse(data.output);
+
+                this.loadingComplete = true;
+
+                this.buildReactiveForm(this.projectoutcome);
+
+ 
+
+            }
+
+        });
+
+    }
+
+ 
+
+    breadCrumb_operation(event) {
+
+ 
+
+        switch (event.operation) {
+
+            case "Save":
+
+                this.btnSave('save', event);
+
+                break;
+
+ 
+
+            case "DSave":
+
+                this.router.navigate([event.path])
+
+                break;
+
+        }
+
+    }
+
+ 
+
+    gotoBack() {
+
+        this.router.navigate(['/projectplan/' + this.itemID + '/projectdescription']);
+
+    }
+
+ 
+
+ 
+
+    showAlert(obj, index) {
+
+        this.Delete_obj = obj;
+
+        this.Delete_index = index;
+
+        this.confirmdialog.showApproveModal("showAlert");
+
+    }
+
+ 
+
+    deleteProjectoutcome() {
+
+        this.DeletedProjectoutcome.push({ "guid": this.Delete_obj.IndividualOutcomesID, "Entityname": "cgap_outcome" });
+
+        if (this.Delete_index !== -1) {
+
+            this.projectoutcome.IndividualOutcomes.splice(this.Delete_index, 1)
+
+        }
+
+ 
+
+        if (this.DeletedProjectoutcome.length > 0) {
+
+            let deletedData = { "input": JSON.stringify(this.DeletedProjectoutcome) };
+
+            var that = this;
+
+            this.service.ApiController(deletedData, constants.PluginCGAPDeactivate, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                this.DeletedProjectoutcome = [];
+
+            }, (error: Response) => { console.log(error.status + "***" + error.statusText + "***" + error.url); }
+
+            );
+
+        }
+
+ 
+
+        this.confirmdialog.hideDialog();
+
+    }
+
+    showFormErros(formGroup: FormGroup) {
+
+ 
+
+        this.Application_errors = []
+
+        Object.keys(formGroup.controls).forEach(field => {
+
+            const control = formGroup.get(field);
+
+            if (control instanceof FormControl) {
+
+                if (!this.isEmpty(control.errors))
+
+                    this.Application_errors.push(field + " is required");
+
+            }
+
+        });
+
+ 
+
+    }
+
+    
+
+    Preview() {
+
+        this.OutcomesManipulation();
+
+        this.isPreview = true;
+
+        //this.router.navigate(['/projectplan/' + constants.getProjectDetailID + '/preview']);
+
+    }
+
+ 
+
+    readEmittedValue(val) {
+
+        this.isPreview = val;
+
+    }
+
+ 
+
+    btnSave(operation, event?) {
+
+ 
+
+        this.OutcomesManipulation();
+
+        this.showFormErros(this.Projectoutcome_Form);
+
+        if (this.Application_errors.length == 0) {
+
+            var docArray = [];
+
+            docArray.push(this.Projectoutcome_Form.get('Document').value[0]);
+
+            if (docArray && docArray.length > 0) {
+
+                this.DocumentManipulation(docArray);
+
+            }
+
+            let data = { "input": JSON.stringify(this.Projectoutcome_Form.value) }
+
+            $('#btn_submit').attr('disabled', true);
+
+            this.service.ApiControllerWithFile(data, "", constants.getProjectDetailID, "PP", docArray, constants.ProjectOutcomeSave, constants.PostMethod, "api/Home/PostDataWithFile").takeUntil(this.unsubscribe).subscribe((data) => {
+
+                //this.service.ApiController(data, constants.ProjectOutcomeSave, constants.PostMethod, constants.ControllerAPI).takeUntil(this.unsubscribe).subscribe((data) => {
+
+                console.log('Project outcome save')
+
+                console.log(data);
+
+                $('#btn_submit').attr('disabled', false);
+
+                let itemID = data.output;
+
+                switch (operation) {
+
+                    case "Exit":
+
+                        this.router.navigate(['/Home'])
+
+                        break;
+
+ 
+
+                    case "Continue":
+
+                        this.router.navigateByUrl("/projectplan/" + itemID + "/projectdeliverables");
+
+                        break;
+
+                    case "save":
+
+                        if (event == "BackbtnSave") {
+
+                            this.router.navigateByUrl("/projectplan/" + itemID + "/projectdescription");
+
+                            break;
+
+                        } else {
+
+                            this.router.navigate([event.path])
+
+                            break;
+
+                        }
+
+ 
+
+                    case "Outcome":
+
+                        this.router.navigate(['/projectplan/' + this.itemID + '/projectoutcomeprofile']);
+
+                        break;
+
+                }
+
+            });
+
+        } else {
+
+            this.showFormErros(this.Projectoutcome_Form);
+
+        }
+
+    }
+
+ 
+
+    DocumentManipulation(data) {
+
+        data.forEach(item => {
+
+            if (item.DocumentDate) {
+
+                item.DocumentDate = this.service.GetFormattedDate(item.DocumentDate);
+
+            }
+
+            else {
+
+                item.DocumentDate = '';
+
+                //item.DocumentDate = this.service.GetFormattedDate(new Date());
+
+            }
+
+            item.Location = 'Outcomes';
+
+            item.SubLocation = '';
+
+            item.DocumentID = item.DocumentID ? item.DocumentID :'';
+
+            item.DocumentCategory = '';
+
+            item.DocumentCategoryName = '';
+
+            item.DocumentCategory = '';
+
+            item.DocumentClassification = '';
+
+            item.DocumentClassificationName = '';
+
+            item.ProjectDetailID = this.Projectoutcome_Form.get('ProjectDetailID').value;
+
+            item.ProjectID = this.itemID;
+
+            item.ProjectStage = this.projectPlanDetails.ProjectStageName;
+
+            item.CGAPProjectName = this.projectPlanDetails.ProjectName;
+
+            item.ProjectAcronym = this.projectPlanDetails.ProjectAcronym;
+
+            item.CGAPCountry = this.CountryName;
+
+            item.CGAPRegion = this.RegionName;
+
+            item.PrimaryPillar = this.projectPlanDetails.PrimaryPillar;
+
+            item.SecondaryPillar = this.projectPlanDetails.SecondaryPillar;
+
+            item.OutcomeName = '';
+
+           item.OutcomeCategory = '';
+
+            item.IndicatorID = '';
+
+            item.IndicatorTitle = '';
+
+            item.DeliverableTitle = '';
+
+            item.ActualDeliverable = '';
+
+            item.MemberName = this.MemberName;
+
+            item.PartnerName = '';
+
+            item.FundingSource = this.FundingSource;
+
+            item.CGAPProjectID = this.projectPlanDetails.CGAPProjectID;
+
+        });
+
+    }
+
+ 
+
+    OutcomesManipulation() {
+
+        this.summer_directive.forEach(d => {
+
+            d.getSummernoteContent();
+
+        });
+
+        this.Projectoutcome_Form.value.ProjectDetailID = this.itemID;
+
+        this.Projectoutcome_Form.value.IndividualOutcomes = null;
+
+    }
+
+}

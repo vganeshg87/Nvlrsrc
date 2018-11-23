@@ -1,0 +1,89 @@
+App routing module.ts
+
+import { NgModule } from '@angular/core';
+
+import { Routes, RouterModule } from '@angular/router';
+
+import {HomeComponent} from './components/home/home.component'
+
+import { ProjectlistingComponent } from './components/projectlisting/projectlisting.component'
+
+import { authService } from './services/auth.service';
+
+ 
+
+ 
+
+ 
+
+const routes: Routes = [
+
+    {
+
+        path: '', redirectTo: "/Home", pathMatch: 'full'
+
+    },
+
+    {
+
+        path: 'Home', component: ProjectlistingComponent, canActivate: [authService]
+
+    },
+
+       {
+
+        path: 'projectlisting', component: ProjectlistingComponent, canActivate: [authService]
+
+    }, 
+
+   {
+
+        path: 'conceptnote', loadChildren: './modules/conceptnote/conceptnote.module#ConceptnoteModule' 
+
+    },
+
+    {
+
+        path: 'projectplan', loadChildren: './modules/projectplan/projectplan.module#ProjectplanModule'
+
+    },
+
+    {
+
+        path: 'projectroadmap', loadChildren: './modules/roadmap/roadmap.module#RoadmapModule'
+
+    },
+
+    {
+
+        path: 'member', loadChildren: './modules/member/member.module#MemberModule'
+
+    },
+
+    {
+
+        path: 'engagement', loadChildren: './modules/engagement/engagement.module#EngagementModule'
+
+    },
+
+    {
+
+        path: '**', redirectTo: "/Home"
+
+    }
+
+ 
+
+];
+
+ 
+
+@NgModule({
+
+    imports: [RouterModule.forRoot(routes, { useHash: true})],
+
+    exports: [RouterModule]
+
+})
+
+export class AppRoutingModule { }
