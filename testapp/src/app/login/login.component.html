@@ -1,0 +1,46 @@
+
+<div class = "container"> 
+     
+  <div class="split div1color">
+  </div>
+
+  <div class ="split div2color">
+
+  </div>
+  
+  <div class="split div3color">
+
+    <div class="loginbox">
+
+      
+    <div>
+        <div class="container">
+            <div class="jumbotron">
+              <h1>Welcome</h1>
+              <h2>Angular & Bootstrap Demo</h2>
+            </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading">Status</div>
+              <div class="panel-body">
+                <h3>{{title}}</h3>
+              </div>
+            </div>
+          </div>
+
+      <label for ="uname"></label>
+     <input type="text" [(ngModel)] ="myusername" class="logininpt"  placeholder="Enter user name"  id="username" />
+     <label for="pwd">
+       <br>
+       <br>
+
+     </label>
+     <input type="password" [(ngModel)] ="mypwd" class="logininpt"  placeholder="Enter Password" >
+      </div><br>
+      <div>
+        <!-- <button class="buttonme" (click) ="Submit()">Send Money</button> -->
+        <button (click) ="Submit()" class="buttonme btn btn-primary btn-lg">Login</button>
+        <label ng-value="hai"></label>
+      </div>
+    </div>
+    </div>
+</div> 

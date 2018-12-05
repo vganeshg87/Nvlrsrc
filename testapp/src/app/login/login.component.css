@@ -1,0 +1,61 @@
+.alignment{
+    position:relative
+}
+.verticalline {
+    border: 4px;
+    border-color: rgb(10, 158, 42);
+    border-left: thick solid #2bff00;
+}
+
+div.container{
+    width: 84em;
+    height: 12em;
+}
+
+.split{
+    height: 620px;
+    width: 31.75%;
+    float: left;
+    padding: 10px;
+}
+.logininpt {
+    padding: 0;
+    height: 30px;
+    position: relative;
+    left: 0;
+    outline: none;
+    border: 1px solid #cdcdcd;
+    border-color: rgba(0,0,0,.15);
+    background-color: white;
+    font-size: 16px;
+}
+
+.loginbox {
+    position:fixed;
+    top:245px;
+}
+
+.div1color{
+    background-color: royalblue;
+}
+
+.div2color{
+    background-color: rgb(47, 170, 10);
+}
+
+.div3color{
+    background-color: rgb(182, 225, 65);
+}
+
+.buttonme {
+    background-color: rgba(248, 10, 125, 0.404);
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}

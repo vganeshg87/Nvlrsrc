@@ -1,0 +1,51 @@
+<form [formGroup]="orderForm">
+<!-- <div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+<div [formGroupName]="i">
+        <input type="text" formControlName="Year" placeholder="Year">
+        <input type="checkbox" formControlName="price" placeholder="Item price">
+  <input type="date" formControlName="Dateval" placeholder="Item name">
+  <input type="text" formControlName="description" placeholder="Item description">
+  <input type="text" formControlName="Baseline" placeholder="Baselin">
+  <input type="text" formControlName="projection" placeholder="Projectionn">
+  <input type="text" formControlName="achieved" placeholder="Achieved">
+</div>
+Chosen name: {{ orderForm.controls.items.controls[i].controls.Year.value }}
+</div>
+
+<input type="Button" value="Click" (click)="addItem()" >
+<input type="Button" value="Save" (click)="Saveitem()" > -->
+
+
+<table>
+   <tbody>
+     <tr formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+       <td>
+          <input type="text" formControlName="Year" > {{item[i].Year}} </td>
+         <td> <input type="checkbox" formControlName="checkval" ></td>
+    <td><input type="date" formControlName="Dateval" placeholder="Item name"></td>
+   <td> <input type="text" formControlName="description" placeholder="Item description"></td>
+   <td> <input type="text" formControlName="Baseline" placeholder="Baselin"></td>
+    <td><input type="text" formControlName="projection" placeholder="Projectionn"></td>
+    <td><input type="text" formControlName="achieved" placeholder="Achieved"></td>
+
+       
+     </tr>
+   </tbody>
+
+</table>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
